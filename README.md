@@ -7,7 +7,8 @@
 
 **Start server:**
 1. >Nếu chưa có nodemon: `node index.js`
-2. >Nếu code nodemon: `nodemon index.js`
+2. >Nếu đã cài đặt nodemon: `nodemon index.js`  
+   >Cách cài nodemon (CMD với quyền administrator)`npm install -g nodemon`
 
 **List API:**
 1. >Mở Postman
