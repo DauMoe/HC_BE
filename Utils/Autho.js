@@ -21,7 +21,7 @@ function GenToken(info) {
 
     /*
     * resp: {
-    *   code: <int>,
+    *   pub: <String>,
     *   token: <String>,
     *   username: <String>
     * }
@@ -34,6 +34,7 @@ function GenToken(info) {
 
     resp.username = info.username;
     resp.token = token;
+    resp.pub = pubKey.toString();
 
     return resp;
 }

@@ -46,7 +46,7 @@ function Login(req, resp) {
                         "username": res.msg[0].username,
                         "isAdmin": res.msg[0].roles
                     });
-                    ExResp.SuccessResp(resp, jResp);
+                    ExResp.SuccessResp(resp, [jResp]);
                 } else {
                     ExResp.CustomMsg(resp, 201, "Wrong password!");
                 }

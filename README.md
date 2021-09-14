@@ -4,6 +4,7 @@
 1. Mở CMD, cd vào folder chứa code và chạy lệnh
 `npm install`  
 2. paste folder pictures vào folder chính  
+3. Tạo database tên **hue_hoai** sau đó import file .sql vào
 
 **Start server:**
 >C1: Nếu chưa có nodemon: `node index.js`  
