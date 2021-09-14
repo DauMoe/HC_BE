@@ -1,0 +1,171 @@
+{
+	"info": {
+		"_postman_id": "25b7d41c-0c90-48e0-a7b8-ce83c9a538f8",
+		"name": "hue_hoai",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"moe12\",\r\n    \"password\": \"123\",\r\n    \"roles\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/new_user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"new_user"
+					]
+				},
+				"description": "Create new user"
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"moe1\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Info",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdXRoIjp0cnVlLCJleHAiOjE2MzEzMTQ5MzEsInVzZXJuYW1lIjoibW9lIn0.W1AH2MGtW331e1jqBHtqLMtRpKqqoZUGDTtxeqsrspJiiJqyucVlkJ5itt-IScHkrk7FhmA_JRB1Hsf9qU3tLQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"tall\": \"1.73\",\r\n    \"weight\": \"78\",\r\n    \"age\": 69,\r\n    \"ava\": \"blank here bro\",\r\n    \"token\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/update_info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"update_info"
+					]
+				},
+				"description": "Cal BMI here"
+			},
+			"response": []
+		},
+		{
+			"name": "Get A Excer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdXRoIjp0cnVlLCJleHAiOjE2MzEzNjA2MjYsInVzZXJuYW1lIjoibW9lIn0.iAvyaa6wQ78waRjRJx0fYrOX-6GF1Uh8ghkvc4G35sFveZ4IemgH3IXKXQ-qe8Zf5oxnmv4yoikgldiE0vmdQA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": -2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/BE_hue_war_exploded/api/get_excer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"BE_hue_war_exploded",
+						"api",
+						"get_excer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Exercises",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 13\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/list_exer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list_exer"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
