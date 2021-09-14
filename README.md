@@ -1,4 +1,5 @@
-#Hướng dẫn sử dụng
+# Hướng dẫn sử dụng
+
 **Lần đầu cài đặt (chưa có thư mực node_modules & pictures):**  
 1. Mở CMD, cd vào folder chứa code và chạy lệnh
 `npm install`  
