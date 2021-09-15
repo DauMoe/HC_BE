@@ -8,9 +8,17 @@ const USER_SV = require('./Services/UserServices');
 const EXER_SV = require('./Services/ExerServices');
 
 //Config
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(cors()); //Pass CORS
+
+//Setup BodyParser (MAX SIZE: 100MB)
+app.use(bodyParser.urlencoded({
+    extended: true,
+    "limit": '100mb'
+}));
+app.use(bodyParser.text());
+app.use(bodyParser.json({
+    "limit": "100mb"
+}));
 app.use(bodyParser.raw());
 
 //User API
@@ -22,6 +30,7 @@ app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 
 //Exercises API
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);
+app.post(API_URL.CREATE_EXER, EXER_SV.CreateExercise);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);

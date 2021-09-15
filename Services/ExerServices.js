@@ -1,15 +1,17 @@
 const ExcerDAO = require('./../DAO/ExcerDAO');
 const ExResp = require('./../Utils/ExceptionResponse');
 const fs = require('fs');
-const FormData = require('form-data');
 
 /*
 * NOTE:
 *   FormData: https://www.npmjs.com/package/form-data
 * */
 
+
+
 module.exports = {
     GetExercise: GetExercise,
+    CreateExercise: CreateExercise,
     Test: Test
 };
 
@@ -56,6 +58,7 @@ function GetExercise(req, resp) {
         //get one
         ExcerDAO.GetOneUser(excerID)
             .then(res => {
+                //============== SEND BINARY DATA RESPONSE ===============
                 let path = res.msg[0].excer_url.replace(/\\/g, '/');
                 path = path.replace(path.charAt(0), '');
                 path = '/..' + path;
@@ -70,7 +73,7 @@ function GetExercise(req, resp) {
 
                 fs.createReadStream(__dirname + path).pipe(resp);
 
-
+                //============== SEND FORM-DATA RESPONSE ===============
                 // var form = new FormData();
                 // form.append('data', JSON.stringify(res.msg[0]));
                 // let path = res.msg[0].excer_url.replace(/\\/g, '/');
@@ -90,6 +93,40 @@ function GetExercise(req, resp) {
                 ExResp.ResponseDAOFail(resp, err);
             });
     }
+}
+
+function CreateExercise(req, resp) {
+    //Doc: https://stackoverflow.com/questions/51954663/how-to-write-a-base64-video-to-file-in-nodejs
+
+    //Check fields
+    req = req.body;
+    if (!req.hasOwnProperty("exerName")) ExResp.ThrowMissingFields(resp, "exerName");
+    if (!req.hasOwnProperty("exerDesc")) ExResp.ThrowMissingFields(resp, "exerDesc");
+    if (!req.hasOwnProperty("bmi_from")) ExResp.ThrowMissingFields(resp, "bmi_from");
+    if (!req.hasOwnProperty("bmi_to")) ExResp.ThrowMissingFields(resp, "bmi_to");
+    if (!req.hasOwnProperty("video")) ExResp.ThrowMissingFields(resp, "video");
+
+    //Convert Base64 to MP4 video
+    let video = req.video.replace(/^data:(.*?);base64,/, ""); // <--- make it any type
+    video = video.replace(/ /g, '+'); // <--- this is important
+    let time = Date.now();
+    let videoPath = '\\picture\\' + time + '.mp4';
+    fs.writeFile(__dirname + '\\..' + videoPath, video, 'base64', function (err) {
+        if (err) ExResp.CustomMsg(resp, 201, "Cannot write file to storage!");
+        ExcerDAO.CreateNewExcer({
+            "excer_name": req.exerName,
+            "bmi_from": Number.parseFloat(req.bmi_from),
+            "bmi_to": Number.parseFloat(req.bmi_to),
+            "excer_url": "." + videoPath,
+            "desc": req.exerDesc,
+        })
+            .then(res => {
+                ExResp.SuccessResp(resp, "Create exercise success!");
+            })
+            .catch(err => {
+                ExResp.ResponseDAOFail(resp, err);
+            });
+    });
 }
 
 function Test(req, resp) {

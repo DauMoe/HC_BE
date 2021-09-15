@@ -74,8 +74,7 @@ function CreateNewExcer(info) {
     *   description: <String>
     * }
     * */
-
-    let sql = "INSERT INTO excercise (excer_name, bmi_from. bmi_to, excer_url, description) VALUES (?, ?, ?, ?, ?)";
+    let sql = "INSERT INTO excercise (excer_name, bmi_from, bmi_to, excer_url, description) VALUES (?, ?, ?, ?, ?)";
     return new Promise(((resolve, reject) => {
         connection.query(sql, [
             info.excer_name,

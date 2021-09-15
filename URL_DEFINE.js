@@ -5,6 +5,8 @@ module.exports = {
     LOGOUT: '/api/logout',
 
     GET_EXER: '/api/list_exer',
+    CREATE_EXER: '/api/new_exer',
+    EDIT_EXER: '/api/edit_exer',
 
     TEST: '/api/test'
 }
