@@ -1,6 +1,7 @@
 const db_info = require('./../DAO/DB_INFO');
 
 function ThrowMissingFields(resp, FieldName) {
+    resp.setHeader("content-type", "application/json");
     resp.status(200);
     resp.json({
         "code": 403,
@@ -10,6 +11,7 @@ function ThrowMissingFields(resp, FieldName) {
 }
 
 function ResponseDAOFail(resp, data) {
+    resp.setHeader("content-type", "application/json");
     resp.status(200);
     resp.json(data);
     return;
@@ -20,6 +22,7 @@ function CustomMsg(resp, code, msg) {
     * code: <int>,
     * msg: <any>
     * */
+    resp.setHeader("content-type", "application/json");
     resp.status(200);
     resp.json({
         "code": code,

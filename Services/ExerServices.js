@@ -65,13 +65,18 @@ function GetExercise(req, resp) {
 
                 let typeFile = path.substr(-3);
 
+                let reader = fs.createReadStream(__dirname + path);
+
+                reader.on('error', function (err) {
+                    if (err) ExResp.CustomMsg(resp, 201, "Can't find video!");
+                });
+
                 if (typeFile === "gif") {
                     resp.setHeader("content-type", "image/gif");
                 } else if (typeFile === "mp4") {
                     resp.setHeader("content-type", "video/mp4");
                 }
-
-                fs.createReadStream(__dirname + path).pipe(resp);
+                reader.pipe(resp);
 
                 //============== SEND FORM-DATA RESPONSE ===============
                 // var form = new FormData();
@@ -112,7 +117,7 @@ function CreateExercise(req, resp) {
     let time = Date.now();
     let videoPath = '\\picture\\' + time + '.mp4';
     fs.writeFile(__dirname + '\\..' + videoPath, video, 'base64', function (err) {
-        if (err) ExResp.CustomMsg(resp, 201, "Cannot write file to storage!");
+        if (err) ExResp.CustomMsg(resp, 201, "Cannot convert to file!");
         ExcerDAO.CreateNewExcer({
             "excer_name": req.exerName,
             "bmi_from": Number.parseFloat(req.bmi_from),
