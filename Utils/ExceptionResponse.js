@@ -50,10 +50,15 @@ function HandQuery(err, res, resolve, reject) {
     }
 }
 
+function Convert2String4Java(msg) {
+    return '\"' + msg + '\"';
+}
+
 module.exports = {
     ThrowMissingFields: ThrowMissingFields,
     ResponseDAOFail: ResponseDAOFail,
     CustomMsg: CustomMsg,
     SuccessResp: SuccessResp,
-    HandQuery: HandQuery
+    HandQuery: HandQuery,
+    Convert2String4Java: Convert2String4Java
 }

@@ -11,11 +11,18 @@ module.exports = {
 }
 
 function GetOneUser(username) {
-    let sql = "SELECT userID, username, password, roles FROM user WHERE username = ? LIMIT 1";
+    // let sql = "SELECT *" +
+    //     ", CASE " +
+    //     "WHEN userID IS NULL THEN 'Not existed' " +
+    //     "ELSE 'Existed' " +
+    //     "END AS user_existed " +
+    //     "FROM user WHERE username = ? LIMIT 1";
+    // let sql = "SELECT * FROM user WHERE EXISTS (SELECT userID FROM user WHERE username = ?) AND username = ?"
+    let sql = "SELECT userID, username, password, roles, BMI FROM user WHERE username = ?";
+
     return new Promise(((resolve, reject) => {
         connection.query(sql, [username], (err, res) => ExResp.HandQuery(err, res, resolve, reject));
     }));
-
 }
 
 function UpdateUserHealthInfo(info) {

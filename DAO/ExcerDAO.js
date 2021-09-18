@@ -9,7 +9,9 @@ module.exports = {
     GetOneUser: GetOneUser,
     EditExcer: EditExcer,
     DeleteExcer: DeleteExcer,
-    CreateNewExcer: CreateNewExcer
+    CreateNewExcer: CreateNewExcer,
+    GetRecommendGroupExercise: GetRecommendGroupExercise,
+    GetRecommendExercise: GetRecommendExercise
 }
 
 function GetAllExcer() {
@@ -83,5 +85,25 @@ function CreateNewExcer(info) {
             info.excer_url,
             info.desc,
         ], (err, res) => ExResp.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetRecommendGroupExercise(bmi) {
+    /*
+    * bmi: <float>
+    * */
+    let sql = "SELECT * FROM gr_excercise WHERE bmi_from <= ? AND bmi_to >= ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [bmi, bmi], (err, res) => ExResp.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetRecommendExercise(bmi) {
+    /*
+    * bmi: <float>
+    * */
+    let sql = "SELECT * FROM excercise WHERE bmi_from <= ? AND bmi_to >= ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [bmi, bmi], (err, res) => ExResp.HandQuery(err, res, resolve, reject));
     }));
 }

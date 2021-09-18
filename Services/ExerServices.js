@@ -1,17 +1,11 @@
 const ExcerDAO = require('./../DAO/ExcerDAO');
-const ExResp = require('./../Utils/ExceptionResponse');
+const Utils = require('./../Utils/ExceptionResponse');
 const fs = require('fs');
-
-/*
-* NOTE:
-*   FormData: https://www.npmjs.com/package/form-data
-* */
-
-
 
 module.exports = {
     GetExercise: GetExercise,
     CreateExercise: CreateExercise,
+    GetRecomExercise: GetRecomExercise,
     Test: Test
 };
 
@@ -43,16 +37,16 @@ function GetExercise(req, resp) {
                 for (let i of res.msg) {
                     jResp.push({
                         "excerID": i.excerID,
-                        "excer_name": i.excer_name,
+                        "excer_name": Utils.Convert2String4Java(i.excer_name),
                         "bmi_from": i.bmi_from,
                         "bmi_to": i.bmi_to,
-                        "description": i.description
+                        "description": Utils.Convert2String4Java(i.description)
                     })
                 }
-                ExResp.SuccessResp(resp, jResp);
+                Utils.SuccessResp(resp, jResp);
             })
             .catch(err => {
-                ExResp.ResponseDAOFail(resp, err);
+                Utils.ResponseDAOFail(resp, err);
             });
     } else {
         //get one
@@ -68,7 +62,7 @@ function GetExercise(req, resp) {
                 let reader = fs.createReadStream(__dirname + path);
 
                 reader.on('error', function (err) {
-                    if (err) ExResp.CustomMsg(resp, 201, "Can't find video!");
+                    if (err) Utils.CustomMsg(resp, 201, "Can't find video!");
                 });
 
                 if (typeFile === "gif") {
@@ -95,7 +89,7 @@ function GetExercise(req, resp) {
                 // form.pipe(resp);
             })
             .catch(err => {
-                ExResp.ResponseDAOFail(resp, err);
+                Utils.ResponseDAOFail(resp, err);
             });
     }
 }
@@ -105,11 +99,11 @@ function CreateExercise(req, resp) {
 
     //Check fields
     req = req.body;
-    if (!req.hasOwnProperty("exerName")) ExResp.ThrowMissingFields(resp, "exerName");
-    if (!req.hasOwnProperty("exerDesc")) ExResp.ThrowMissingFields(resp, "exerDesc");
-    if (!req.hasOwnProperty("bmi_from")) ExResp.ThrowMissingFields(resp, "bmi_from");
-    if (!req.hasOwnProperty("bmi_to")) ExResp.ThrowMissingFields(resp, "bmi_to");
-    if (!req.hasOwnProperty("video")) ExResp.ThrowMissingFields(resp, "video");
+    if (!req.hasOwnProperty("exerName")) Utils.ThrowMissingFields(resp, "exerName");
+    if (!req.hasOwnProperty("exerDesc")) Utils.ThrowMissingFields(resp, "exerDesc");
+    if (!req.hasOwnProperty("bmi_from")) Utils.ThrowMissingFields(resp, "bmi_from");
+    if (!req.hasOwnProperty("bmi_to")) Utils.ThrowMissingFields(resp, "bmi_to");
+    if (!req.hasOwnProperty("video")) Utils.ThrowMissingFields(resp, "video");
 
     //Convert Base64 to MP4 video
     let video = req.video.replace(/^data:(.*?);base64,/, ""); // <--- make it any type
@@ -117,7 +111,7 @@ function CreateExercise(req, resp) {
     let time = Date.now();
     let videoPath = '\\picture\\' + time + '.mp4';
     fs.writeFile(__dirname + '\\..' + videoPath, video, 'base64', function (err) {
-        if (err) ExResp.CustomMsg(resp, 201, "Cannot convert to file!");
+        if (err) Utils.CustomMsg(resp, 201, "Cannot convert to file!");
         ExcerDAO.CreateNewExcer({
             "excer_name": req.exerName,
             "bmi_from": Number.parseFloat(req.bmi_from),
@@ -126,12 +120,60 @@ function CreateExercise(req, resp) {
             "desc": req.exerDesc,
         })
             .then(res => {
-                ExResp.SuccessResp(resp, "Create exercise success!");
+                Utils.SuccessResp(resp, "Create exercise success!");
             })
             .catch(err => {
-                ExResp.ResponseDAOFail(resp, err);
+                Utils.ResponseDAOFail(resp, err);
             });
     });
+}
+
+function GetRecomExercise(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("grExer")) Utils.ThrowMissingFields(resp, "grExer");
+    if (!req.hasOwnProperty("BMI")) Utils.ThrowMissingFields(resp, "BMI");
+    console.log(req.grExer);
+    if (Boolean(req.grExer)) {
+        //Get list group recommend exercise
+        ExcerDAO.GetRecommendGroupExercise(Number.parseFloat(req.BMI))
+            .then(res => {
+                console.log(res.msg);
+                let jResp = [];
+                for (let i of res.msg) {
+                    jResp.push({
+                        "id": i.gr_excerID,
+                        "exer_name": Utils.Convert2String4Java(i.gr_name.toString()),
+                        "bmi_from": i.bmi_from,
+                        "bmi_to": i.bmi_to
+                    });
+                }
+                Utils.SuccessResp(resp, jResp);
+            })
+            .catch(err => {
+                Utils.ResponseDAOFail(resp, err);
+            })
+    } else {
+        //Get list recommend exercise
+        ExcerDAO.GetRecommendExercise(Number.parseFloat(req.BMI))
+            .then(res => {
+                let jResp = [];
+                for (let j of res.msg) {
+                    let temp = {
+                        "id": j.excerID,
+                        "exer_name": Utils.Convert2String4Java(j.excer_name),
+                        "desc": Utils.Convert2String4Java(j.description),
+                        "bmi_from": Number.parseFloat(j.bmi_from),
+                        "bmi_to": Number.parseFloat(j.bmi_to)
+                    }
+                    // console.log(temp);
+                    jResp.push(temp);
+                }
+                Utils.SuccessResp(resp, jResp);
+            })
+            .catch(err => {
+                Utils.ResponseDAOFail(resp, err);
+            })
+    }
 }
 
 function Test(req, resp) {

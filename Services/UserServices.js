@@ -1,6 +1,6 @@
 const UserDAO = require('./../DAO/UserDAO');
-const ExResp = require('./../Utils/ExceptionResponse');
-const Utils = require('./../Utils/Autho');
+const Utils = require('./../Utils/ExceptionResponse');
+const JWT_Utils = require('./../Utils/Autho');
 const bcrypt = require('bcrypt');
 const SALT_ROUNDS = 10;
 /*
@@ -14,9 +14,6 @@ module.exports = {
     EditUserHealthyInfo: EditUserHealthyInfo
 }
 
-//Utils
-
-
 //Handling request
 
 function Login(req, resp) {
@@ -27,33 +24,43 @@ function Login(req, resp) {
 
     //Check fields
     req = req.body;
-    if (!req.hasOwnProperty("username")) ExResp.ThrowMissingFields(resp, "username");
-    if (!req.hasOwnProperty("password")) ExResp.ThrowMissingFields(resp, "password");
+    console.log(req);
+    if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
+    if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
 
     //Handle
     UserDAO.GetOneUser(req.username)
         .then(res => {
-            if (res.msg.length == 0) ExResp.CustomMsg(resp, 201, "User is not existed");
+            if (res.msg.length == 0) {
+                Utils.CustomMsg(resp, 201, ["User is not existed"]);
+                return;
+            };
 
             //Compare hash password
             bcrypt.compare(req.password, res.msg[0].password, (err, result) => {
                 if (err) {
-                    ExResp.CustomMsg(resp, 201, "Err when compare pass");
-                    throw Error(err);
+                    console.log("User login fail (Conpare pass err)");
+                    Utils.CustomMsg(resp, 201, ["Err when compare pass"]);
+                    // throw Error(err);
                 }
                 if (result) {
-                    let jResp = Utils.GenToken({
+                    let jResp = JWT_Utils.GenToken({
                         "username": res.msg[0].username,
                         "isAdmin": res.msg[0].roles
                     });
-                    ExResp.SuccessResp(resp, [jResp]);
+                    jResp.BMI = res.msg[0].BMI;
+                    console.log("User login ok");
+                    Utils.SuccessResp(resp, [jResp]);
                 } else {
-                    ExResp.CustomMsg(resp, 201, "Wrong password!");
+                    console.log("User login fail (Wrong pass)");
+                    Utils.CustomMsg(resp, 201, ["Wrong password!"]);
                 }
             });
         })
         .catch(err => {
-            ExResp.ResponseDAOFail(resp, err);
+            console.log("User login fail (DAO err)");
+            console.log(err);
+            Utils.ResponseDAOFail(resp, [err]);
         });
 }
 
@@ -65,9 +72,9 @@ function CreateNewUser(req, resp) {
      */
     //Check fields
     req = req.body;
-    if (!req.hasOwnProperty("username")) ExResp.ThrowMissingFields(resp, "username");
-    if (!req.hasOwnProperty("password")) ExResp.ThrowMissingFields(resp, "password");
-    if (!req.hasOwnProperty("roles")) ExResp.ThrowMissingFields(resp, "roles");
+    if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
+    if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
+    if (!req.hasOwnProperty("roles")) Utils.ThrowMissingFields(resp, "roles");
 
     //Handler
     bcrypt.hash(req.password, SALT_ROUNDS).then(hash => {
@@ -75,13 +82,13 @@ function CreateNewUser(req, resp) {
             .then(res => {
                 console.log(res);
                 if (res.code == 200) {
-                    ExResp.SuccessResp(resp, "Create user success");
+                    Utils.SuccessResp(resp, ["Create user success"]);
                 } else {
-                    ExResp.CustomMsg(resp, 201, res.msg);
+                    Utils.CustomMsg(resp, 201, [res.msg]);
                 }
             })
             .catch(err => {
-                ExResp.ResponseDAOFail(resp, err);
+                Utils.ResponseDAOFail(resp, [err]);
             });
     });
 }
@@ -96,10 +103,10 @@ function EditUserHealthyInfo(req, resp) {
     * */
     //Check fields
     req = req.body;
-    if (!req.hasOwnProperty("userID")) ExResp.ThrowMissingFields(resp, "userID");
-    if (!req.hasOwnProperty("tall")) ExResp.ThrowMissingFields(resp, "password");
-    if (!req.hasOwnProperty("weight")) ExResp.ThrowMissingFields(resp, "weight");
-    if (!req.hasOwnProperty("age")) ExResp.ThrowMissingFields(resp, "age");
+    if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
+    if (!req.hasOwnProperty("tall")) Utils.ThrowMissingFields(resp, "password");
+    if (!req.hasOwnProperty("weight")) Utils.ThrowMissingFields(resp, "weight");
+    if (!req.hasOwnProperty("age")) Utils.ThrowMissingFields(resp, "age");
     let BMI = Number.parseFloat(req.weight) / (2 * Number.parseFloat(req.tall));
     UserDAO.UpdateUserHealthInfo({
         "userID": req.userID,
@@ -110,9 +117,9 @@ function EditUserHealthyInfo(req, resp) {
         "ava_url": ""
     })
         .then(res => {
-            ExResp.SuccessResp(resp, "Update user's info success");
+            Utils.SuccessResp(resp, ["Update user's info success"]);
         })
         .catch(err => {
-            ExResp.ResponseDAOFail(resp, err);
+            Utils.ResponseDAOFail(resp, [err]);
         })
 }

@@ -31,6 +31,7 @@ app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 //Exercises API
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);
 app.post(API_URL.CREATE_EXER, EXER_SV.CreateExercise);
+app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
