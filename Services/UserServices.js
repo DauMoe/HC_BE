@@ -107,6 +107,7 @@ function EditUserHealthyInfo(req, resp) {
     if (!req.hasOwnProperty("tall")) Utils.ThrowMissingFields(resp, "password");
     if (!req.hasOwnProperty("weight")) Utils.ThrowMissingFields(resp, "weight");
     if (!req.hasOwnProperty("age")) Utils.ThrowMissingFields(resp, "age");
+    if (!req.hasOwnProperty("stepsOneMeter")) Utils.ThrowMissingFields(resp, "stepsOneMeter");
     let BMI = Number.parseFloat(req.weight) / (2 * Number.parseFloat(req.tall));
     UserDAO.UpdateUserHealthInfo({
         "userID": req.userID,
@@ -114,6 +115,7 @@ function EditUserHealthyInfo(req, resp) {
         "weight": Number.parseFloat(req.weight),
         "age": Number.parseInt(req.age),
         "BMI": BMI,
+        "step_range": Number.parseFloat(1000/Number.parseInt(req.stepsOneMeter)),
         "ava_url": ""
     })
         .then(res => {

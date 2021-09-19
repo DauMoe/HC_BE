@@ -9,5 +9,9 @@ module.exports = {
     EDIT_EXER: '/api/edit_exer',
     GET_RECOM_EXER: '/api/list_recom_exer',
 
+    NEW_STEPS: '/api/new_steps',
+    NEW_HISTORY: '/api/new_history',
+    GET_HISTORY: '/api/list_history',
+
     TEST: '/api/test'
 }

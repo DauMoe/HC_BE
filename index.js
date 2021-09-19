@@ -6,6 +6,7 @@ const API_URL = require('./URL_DEFINE');
 const AuthMiddle = require('./Utils/Autho');
 const USER_SV = require('./Services/UserServices');
 const EXER_SV = require('./Services/ExerServices');
+const HISTORY_SV = require('./Services/HistoryServices');
 
 //Config
 app.use(cors()); //Pass CORS
@@ -32,6 +33,10 @@ app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);
 app.post(API_URL.CREATE_EXER, EXER_SV.CreateExercise);
 app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
+
+//History API
+app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);
+app.post(API_URL.NEW_STEPS, HISTORY_SV.NewStepHistory);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
