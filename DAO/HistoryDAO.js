@@ -8,7 +8,9 @@ module.exports = {
     GetHistory: GetHistory,
     NewExerHistory: NewExerHistory,
     NewStepHistory: NewStepHistory,
-    GetStepToday: GetStepToday
+    GetStepToday: GetStepToday,
+    GetSteps: GetSteps,
+    GetLastStepsRecord: GetLastStepsRecord
 }
 
 function GetHistory(userID, startimestamp, endtimestamp) {
@@ -85,9 +87,30 @@ function GetStepToday(userID, starttimestamp, nowtimestamp) {
     * starttime: <int>
     * endtime: <int>
     * */
-    let sql = "SELECT history.userID, history.distance, history.distanceofday, history.step, history.stepofday, history.calo, history.endtime, user.step_range FROM history, user WHERE history.userID = ? AND user.userID = ? AND history.starttime >= ? AND history.endtime <= ? ORDER BY history.endtime DESC LIMIT 1";
-
+    let sql = "SELECT history.userID, history.distance, history.distanceofday, history.step, history.stepofday, history.calo, history.starttime, history.endtime, user.step_range FROM history, user WHERE history.userID = ? AND user.userID = ? AND history.starttime >= ? AND history.endtime <= ? ORDER BY history.endtime DESC LIMIT 1";
     return new Promise(((resolve, reject) => {
         connection.query(sql, [userID, userID, new Date(starttimestamp), new Date(nowtimestamp)], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetSteps(userID, starttimestamp, nowtimestamp) {
+    /*
+    * userID: <int>
+    * starttime: <int>
+    * endtime: <int>
+    * */
+    let sql = "SELECT userID, distance, distanceofday, step, stepofday, calo, starttime, endtime FROM history WHERE userID = ? AND starttime >= ? AND endtime <= ? ORDER BY distanceofday DESC";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [userID, new Date(starttimestamp), new Date(nowtimestamp)], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetLastStepsRecord(userID) {
+    /*
+    * userID: <int>
+    * */
+    let sql = "SELECT userID, stepofday FROM history WHERE userID = ? ORDER BY distanceofday DESC LIMIT 1";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [userID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }

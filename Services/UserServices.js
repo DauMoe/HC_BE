@@ -49,6 +49,7 @@ function Login(req, resp) {
                         "isAdmin": res.msg[0].roles
                     });
                     jResp.BMI = res.msg[0].BMI;
+                    jResp.userID = res.msg[0].userID;
                     console.log("User login ok");
                     Utils.SuccessResp(resp, [jResp]);
                 } else {

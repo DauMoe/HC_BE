@@ -10,6 +10,8 @@ module.exports = {
     GET_RECOM_EXER: '/api/list_recom_exer',
 
     NEW_STEPS: '/api/new_steps',
+    GET_STEPS: '/api/list_steps',
+    GET_RECORD: '/api/last_record',
     NEW_HISTORY: '/api/new_history',
     GET_HISTORY: '/api/list_history',
 

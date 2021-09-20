@@ -4,8 +4,10 @@ const Utils         = require('./../Utils/ExceptionResponse');
 
 module.exports = {
     GetHistory: GetHistory,
+    GetStepsHistory: GetStepsHistory,
     NewHistory: NewHistory,
-    NewStepHistory: NewStepHistory
+    NewStepHistory: NewStepHistory,
+    GetLastStepsRecord: GetLastStepsRecord
 };
 
 /*
@@ -33,6 +35,30 @@ function GetHistory(req, resp) {
         });
 }
 
+async function GetStepsHistory(req, resp) {
+    req = req.body;
+
+    //Check fields
+    if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
+    if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
+    if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
+
+    req.starttime = Number.parseInt(req.starttime);
+    req.endtime = Number.parseInt(req.endtime);
+
+    //Call API
+    try {
+        let TotalSteps = await HistoryDAO.GetSteps(Number.parseInt(req.userID), req.starttime, req.endtime);
+        for (let i of TotalSteps.msg) {
+            i.starttime = new Date(i.starttime).getTime();
+            i.endtime = new Date(i.endtime).getTime();
+        }
+        Utils.SuccessResp(resp, TotalSteps.msg);
+    } catch(err) {
+        Utils.ResponseDAOFail(resp, [err]);
+    }
+}
+
 function NewHistory(req, resp) {
     req = req.body;
 }
@@ -48,6 +74,9 @@ async function NewStepHistory(req, resp) {
     if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
     if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
     if (!req.hasOwnProperty("calo")) Utils.ThrowMissingFields(resp, "calo");
+
+    req.starttime = Number.parseInt(req.starttime);
+    req.endtime = Number.parseInt(req.endtime);
 
     //Get current steps today
     let starttime = new Date();
@@ -65,27 +94,42 @@ async function NewStepHistory(req, resp) {
             //Init step event of new day
             try {
                 let StepRange = await UserDAO.GetHealthInfo(req.userID);
-                todayStepInfo.step = req.steps;
-                todayStepInfo.stepofday = req.steps;
-                todayStepInfo.distance = req.steps * StepRange.msg[0].step_range;
+                todayStepInfo.step          = req.steps;
+                todayStepInfo.stepofday     = req.steps;
+                todayStepInfo.distance      = req.steps * StepRange.msg[0].step_range;
                 todayStepInfo.distanceofday = req.steps * StepRange.msg[0].step_range;
             } catch (err) {
                 Utils.ResponseDAOFail(resp, [err]);
             }
         } else {
-            todayStepInfo.step = req.steps;
-            todayStepInfo.stepofday = req.steps + StepToday.msg[0].stepofday;
-            todayStepInfo.distance = req.steps * StepToday.msg[0].step_range;
-            todayStepInfo.distanceofday = req.steps * StepToday.msg[0].step_range + StepToday.msg[0].distanceofday;
+            todayStepInfo.step              = req.steps;
+            todayStepInfo.stepofday         = req.steps + StepToday.msg[0].stepofday;
+            todayStepInfo.distance          = req.steps * StepToday.msg[0].step_range;
+            todayStepInfo.distanceofday     = req.steps * StepToday.msg[0].step_range + StepToday.msg[0].distanceofday;
         }
         HistoryDAO.NewStepHistory(todayStepInfo)
-        .then(res1 => {
-            Utils.SuccessResp(resp, ["Update step history of today success"]);
-        })
-        .catch(err1 => {
-            Utils.ResponseDAOFail(resp, [err1]);
-        });
+            .then(res1 => {
+                Utils.SuccessResp(resp, ["Update step history of today success"]);
+            })
+            .catch(err1 => {
+                Utils.ResponseDAOFail(resp, [err1]);
+            });
     } catch (err) {
+        Utils.ResponseDAOFail(resp, [err]);
+    }
+}
+
+async function GetLastStepsRecord(req, resp) {
+    req = req.body;
+
+    //Check fields
+    if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
+
+    //Call DAO
+    try {
+        let LastRecord = await HistoryDAO.GetLastStepsRecord(req.userID);
+        Utils.SuccessResp(resp, LastRecord.msg);
+    } catch(err) {
         Utils.ResponseDAOFail(resp, [err]);
     }
 }

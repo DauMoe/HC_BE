@@ -37,6 +37,8 @@ app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
 //History API
 app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);
 app.post(API_URL.NEW_STEPS, HISTORY_SV.NewStepHistory);
+app.post(API_URL.GET_STEPS, HISTORY_SV.GetStepsHistory);
+app.post(API_URL.GET_RECORD, HISTORY_SV.GetLastStepsRecord);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
