@@ -1,5 +1,9 @@
 # Hướng dẫn sử dụng
 
+**NOTE:**
+Chú ý phiên bản DB và file *postman_collection1* để import lại!
+----
+
 **Lần đầu cài đặt (chưa có thư mực node_modules & pictures):**  
 1. Mở CMD, cd vào folder chứa code và chạy lệnh
 `npm install`  
