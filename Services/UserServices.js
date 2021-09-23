@@ -50,6 +50,7 @@ function Login(req, resp) {
                     });
                     jResp.BMI = res.msg[0].BMI;
                     jResp.userID = res.msg[0].userID;
+                    jResp.step_range = res.msg[0].step_range;
                     console.log("User login ok");
                     Utils.SuccessResp(resp, [jResp]);
                 } else {

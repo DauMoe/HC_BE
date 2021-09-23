@@ -19,7 +19,7 @@ function GetOneUser(username) {
     //     "END AS user_existed " +
     //     "FROM user WHERE username = ? LIMIT 1";
     // let sql = "SELECT * FROM user WHERE EXISTS (SELECT userID FROM user WHERE username = ?) AND username = ?"
-    let sql = "SELECT userID, username, password, roles, BMI FROM user WHERE username = ?";
+    let sql = "SELECT userID, username, password, roles, BMI, step_range FROM user WHERE username = ?";
 
     return new Promise(((resolve, reject) => {
         connection.query(sql, [username], (err, res) => Utils.HandQuery(err, res, resolve, reject));
