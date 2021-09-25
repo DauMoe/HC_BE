@@ -75,15 +75,15 @@ async function NewStepHistory(req, resp) {
     if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
     if (!req.hasOwnProperty("calo")) Utils.ThrowMissingFields(resp, "calo");
 
-    req.starttime = Number.parseInt(req.starttime);
-    req.endtime = Number.parseInt(req.endtime);
+    // req.starttime = Number.parseInt(req.starttime);
+    // req.endtime = Number.parseInt(req.endtime);
 
     //Get current steps today
-    let starttime = new Date();
-    starttime.setUTCHours(0,0,0,0);
+    let starttimestamp = new Date();
+    starttimestamp.setUTCHours(0,0,0,0);
     let nowtime = new Date();
     try{
-        let StepToday = await HistoryDAO.GetStepToday(Number.parseInt(req.userID), starttime.getTime(), nowtime.getTime());
+        let StepToday = await HistoryDAO.GetStepToday(Number.parseInt(req.userID), starttimestamp.getTime(), nowtime.getTime());
         let todayStepInfo = {
             userID: req.userID,
             calo: Number.parseInt(req.calo),
@@ -94,12 +94,13 @@ async function NewStepHistory(req, resp) {
             //Init step event of new day
             try {
                 let StepRange = await UserDAO.GetHealthInfo(req.userID);
+                console.log(StepRange);
                 todayStepInfo.step          = req.steps;
                 todayStepInfo.stepofday     = req.steps;
                 todayStepInfo.distance      = req.steps * StepRange.msg[0].step_range;
                 todayStepInfo.distanceofday = req.steps * StepRange.msg[0].step_range;
             } catch (err) {
-                Utils.ResponseDAOFail(resp, [err]);
+                Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
             }
         } else {
             todayStepInfo.step              = req.steps;
@@ -112,10 +113,10 @@ async function NewStepHistory(req, resp) {
                 Utils.SuccessResp(resp, ["\"Update step history of today success\""]);
             })
             .catch(err1 => {
-                Utils.ResponseDAOFail(resp, [err1]);
+                Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err1)]);
             });
     } catch (err) {
-        Utils.ResponseDAOFail(resp, [err]);
+        Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
     }
 }
 

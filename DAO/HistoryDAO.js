@@ -109,11 +109,13 @@ function GetLastStepsRecord(userID) {
     /*
     * userID: <int>
     * */
-    let starttime = new Date();
-    starttime.setUTCHours(0,0,0,0);
-    console.log(starttime);
-    let sql = "SELECT userID, stepofday FROM history WHERE userID = ? AND endtime >= ? ORDER BY distanceofday DESC LIMIT 1";
+
+    let d = new Date();
+    let today = d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    let starttimestamp = today + " 00:00:00";
+    let endTimestamp = today + " 23:59:59";
+    let sql = "SELECT userID, stepofday FROM history WHERE userID = ? AND starttime >= ? AND starttime <= ? AND endtime >= ? AND endtime <=? ORDER BY distanceofday DESC LIMIT 1";
     return new Promise(((resolve, reject) => {
-        connection.query(sql, [userID, starttime], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+        connection.query(sql, [userID, starttimestamp, endTimestamp, starttimestamp, endTimestamp], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }

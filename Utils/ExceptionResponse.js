@@ -5,7 +5,7 @@ function ThrowMissingFields(resp, FieldName) {
     resp.status(200);
     resp.json({
         "code": 403,
-        "msg": `Missing arg '${FieldName}'`
+        "msg": "\"Missing arg '" + FieldName + "'\""
     });
     return;
 }
