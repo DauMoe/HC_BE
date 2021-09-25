@@ -109,7 +109,7 @@ async function NewStepHistory(req, resp) {
         }
         HistoryDAO.NewStepHistory(todayStepInfo)
             .then(res1 => {
-                Utils.SuccessResp(resp, ["Update step history of today success"]);
+                Utils.SuccessResp(resp, ["\"Update step history of today success\""]);
             })
             .catch(err1 => {
                 Utils.ResponseDAOFail(resp, [err1]);

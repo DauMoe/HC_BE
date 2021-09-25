@@ -32,7 +32,7 @@ function Login(req, resp) {
     UserDAO.GetOneUser(req.username)
         .then(res => {
             if (res.msg.length == 0) {
-                Utils.CustomMsg(resp, 201, ["User is not existed"]);
+                Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("User is not existed")]);
                 return;
             };
 
@@ -40,7 +40,7 @@ function Login(req, resp) {
             bcrypt.compare(req.password, res.msg[0].password, (err, result) => {
                 if (err) {
                     console.log("User login fail (Conpare pass err)");
-                    Utils.CustomMsg(resp, 201, ["Err when compare pass"]);
+                    Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Err when compare pass")]);
                     // throw Error(err);
                 }
                 if (result) {
@@ -55,14 +55,14 @@ function Login(req, resp) {
                     Utils.SuccessResp(resp, [jResp]);
                 } else {
                     console.log("User login fail (Wrong pass)");
-                    Utils.CustomMsg(resp, 201, ["Wrong password!"]);
+                    Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Wrong password!")]);
                 }
             });
         })
         .catch(err => {
             console.log("User login fail (DAO err)");
             console.log(err);
-            Utils.ResponseDAOFail(resp, [err]);
+            Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
         });
 }
 
@@ -84,13 +84,13 @@ function CreateNewUser(req, resp) {
             .then(res => {
                 console.log(res);
                 if (res.code == 200) {
-                    Utils.SuccessResp(resp, ["Create user success"]);
+                    Utils.SuccessResp(resp, [Utils.Convert2String4Java("Create user success")]);
                 } else {
-                    Utils.CustomMsg(resp, 201, [res.msg]);
+                    Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java(res.msg)]);
                 }
             })
             .catch(err => {
-                Utils.ResponseDAOFail(resp, [err]);
+                Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
             });
     });
 }
@@ -121,9 +121,9 @@ function EditUserHealthyInfo(req, resp) {
         "ava_url": ""
     })
         .then(res => {
-            Utils.SuccessResp(resp, ["Update user's info success"]);
+            Utils.SuccessResp(resp, [Utils.Convert2String4Java("Update user's info success")]);
         })
         .catch(err => {
-            Utils.ResponseDAOFail(resp, [err]);
+            Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
         })
 }
