@@ -36,39 +36,6 @@
 			"response": []
 		},
 		{
-			"name": "Login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"moe1\",\r\n    \"password\": \"123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://192.168.0.108:8080/api/login",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"0",
-						"108"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"login"
-					]
-				},
-				"description": "Login"
-			},
-			"response": []
-		},
-		{
 			"name": "Update User Info",
 			"request": {
 				"method": "POST",
@@ -106,7 +73,40 @@
 			"response": []
 		},
 		{
-			"name": "Get Exercises",
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"moe1\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.0.108:8080/api/login",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"108"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"login"
+					]
+				},
+				"description": "Login"
+			},
+			"response": []
+		},
+		{
+			"name": "Get List Exercises",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -120,6 +120,87 @@
 					"path": [
 						"api",
 						"list_exer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get List Group Exercise",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/get_group_exercise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_group_exercise"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Detail Exercise",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/list_exer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list_exer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recommend (List) Exercise",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grExer\": false,\r\n    \"BMI\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.0.108:8080/api/list_recom_exer",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"108"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list_recom_exer"
 					]
 				}
 			},
@@ -155,66 +236,13 @@
 			"response": []
 		},
 		{
-			"name": "Test",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/test",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"test"
-					]
-				},
-				"description": "For test API"
-			},
-			"response": []
-		},
-		{
-			"name": "Get Recommend (List) Exercise",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"grExer\": true,\r\n    \"BMI\": 0\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://192.168.0.108:8080/api/list_recom_exer",
-					"protocol": "http",
-					"host": [
-						"192",
-						"168",
-						"0",
-						"108"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"list_recom_exer"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Update steps of today",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userID\": 1,\r\n    \"steps\": 20\r\n}",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"steps\": 20,\r\n    \"starttime\": 1632593912148,\r\n    \"endtime\": 1632595912148,\r\n    \"calo\": 0\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -275,7 +303,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userID\": 1.0\r\n}",
+					"raw": "{\r\n    \"userID\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -295,6 +323,35 @@
 					"path": [
 						"api",
 						"last_record"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Detail Exercise (NEW)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"exerID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/get_detail_exercise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_detail_exercise"
 					]
 				}
 			},
