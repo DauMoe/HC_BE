@@ -6,6 +6,8 @@ module.exports = {
     GetExercise: GetExercise,
     CreateExercise: CreateExercise,
     GetRecomExercise: GetRecomExercise,
+    GetGroupExercise: GetGroupExercise,
+    GetDetailExercise: GetDetailExercise,
     Test: Test
 };
 
@@ -50,13 +52,13 @@ function GetExercise(req, resp) {
             });
     } else {
         //get one
-        ExcerDAO.GetOneUser(excerID)
+        ExcerDAO.GetOnExercise(excerID)
             .then(res => {
                 //============== SEND BINARY DATA RESPONSE ===============
                 let path = res.msg[0].excer_url.replace(/\\/g, '/');
                 path = path.replace(path.charAt(0), '');
                 path = '/..' + path;
-
+                console.log(__dirname + path);
                 let typeFile = path.substr(-3);
 
                 let reader = fs.createReadStream(__dirname + path);
@@ -137,7 +139,6 @@ function GetRecomExercise(req, resp) {
         //Get list group recommend exercise
         ExcerDAO.GetRecommendGroupExercise(Number.parseFloat(req.BMI))
             .then(res => {
-                console.log(res.msg);
                 let jResp = [];
                 for (let i of res.msg) {
                     jResp.push({
@@ -174,6 +175,49 @@ function GetRecomExercise(req, resp) {
                 Utils.ResponseDAOFail(resp, err);
             })
     }
+}
+
+function GetGroupExercise(req, resp) {
+    ExcerDAO.GetGroupExercise()
+        .then(res => {
+            let jResp = [];
+            for (let i of res.msg) {
+                jResp.push({
+                    "id": i.gr_excerID,
+                    "exer_name": Utils.Convert2String4Java(i.gr_name.toString()),
+                    "bmi_from": i.bmi_from,
+                    "bmi_to": i.bmi_to
+                });
+            }
+            Utils.SuccessResp(resp, jResp);
+        })
+        .catch(err => {
+            Utils.ResponseDAOFail(resp, err);
+        })
+}
+
+function GetDetailExercise(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("exerID")) Utils.ThrowMissingFields(resp, "exerID");
+
+    ExcerDAO.GetOnExercise(req.exerID)
+        .then(res => {
+            // let path = res.msg[0].excer_url.replace(/\\/g, '');
+            // path = path.replace(path.charAt(0), '');
+            // path = '/..' + path;
+            let path = res.msg[0].excer_url.replace(/\\/g, '/');
+            path = path.replace(path.charAt(0), '');
+            path = __dirname + '/..' + path;
+            //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
+            res.msg[0].videoBase64 = fs.readFileSync(path, {encoding: 'base64'});
+            Utils.SuccessResp(resp, [res.msg[0]]);
+        })
+        .catch(err => {
+            Utils.ResponseDAOFail(resp, {
+                "code": 201,
+                "msg": "\"" + err.message + "\""
+            });
+        })
 }
 
 function Test(req, resp) {

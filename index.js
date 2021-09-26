@@ -37,6 +37,8 @@ app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);
 app.post(API_URL.CREATE_EXER, EXER_SV.CreateExercise);
 app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
+app.post(API_URL.GET_GROUP_EXER, EXER_SV.GetGroupExercise);
+app.post(API_URL.GET_DETAIL_EXER, EXER_SV.GetDetailExercise);
 
 //History API
 app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);
@@ -47,5 +49,5 @@ app.post(API_URL.GET_RECORD, HISTORY_SV.GetLastStepsRecord);
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
 app.listen(8080, function() {
-    console.log("Listen at 8080");
+    console.log("Listen at http://<your device's IP>:8080");
 });

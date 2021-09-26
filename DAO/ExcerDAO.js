@@ -6,12 +6,13 @@ const connection = mysql.createConnection(db_info.db_config);
 
 module.exports = {
     GetAllExcer: GetAllExcer,
-    GetOneUser: GetOneUser,
+    GetOnExercise: GetOnExercise,
     EditExcer: EditExcer,
     DeleteExcer: DeleteExcer,
     CreateNewExcer: CreateNewExcer,
     GetRecommendGroupExercise: GetRecommendGroupExercise,
-    GetRecommendExercise: GetRecommendExercise
+    GetRecommendExercise: GetRecommendExercise,
+    GetGroupExercise: GetGroupExercise
 }
 
 function GetAllExcer() {
@@ -21,7 +22,7 @@ function GetAllExcer() {
     }));
 }
 
-function GetOneUser(excerID) {
+function GetOnExercise(excerID) {
     /*
     * excerID: <int>
     * */
@@ -95,6 +96,13 @@ function GetRecommendGroupExercise(bmi) {
     let sql = "SELECT * FROM gr_excercise WHERE bmi_from <= ? AND bmi_to >= ?";
     return new Promise(((resolve, reject) => {
         connection.query(sql, [bmi, bmi], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetGroupExercise() {
+    let sql = "SELECT * FROM gr_excercise";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql,  (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }
 
