@@ -25,6 +25,10 @@ app.use(bodyParser.raw());
 //User API
 // app.post(API_URL.CREATE_USER, AuthMiddle.VerifyToken, USER_SV.CreateNewUser);
 
+app.get("/test", function (req, resp) {
+    resp.send("<h1>Hi there</h1>");
+});
+
 app.post(API_URL.LOGIN, USER_SV.Login);
 app.post(API_URL.CREATE_USER, USER_SV.CreateNewUser);
 app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);

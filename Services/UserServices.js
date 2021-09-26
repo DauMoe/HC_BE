@@ -77,7 +77,7 @@ function CreateNewUser(req, resp) {
     if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
     if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
     if (!req.hasOwnProperty("roles")) Utils.ThrowMissingFields(resp, "roles");
-
+    console.log(req.password);
     //Handler
     bcrypt.hash(req.password, SALT_ROUNDS).then(hash => {
         UserDAO.CreateNewUser(req.username, hash, req.roles)
@@ -90,7 +90,11 @@ function CreateNewUser(req, resp) {
                 }
             })
             .catch(err => {
-                Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
+                console.log(err);
+                Utils.ResponseDAOFail(resp, {
+                    "code": err.code,
+                    "msg": [err.msg]
+                });
             });
     });
 }
@@ -124,6 +128,9 @@ function EditUserHealthyInfo(req, resp) {
             Utils.SuccessResp(resp, [Utils.Convert2String4Java("Update user's info success")]);
         })
         .catch(err => {
-            Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
-        })
+            Utils.ResponseDAOFail(resp, {
+                "code": err.code,
+                "msg": [err.msg]
+            });
+        });
 }

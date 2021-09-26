@@ -37,9 +37,10 @@ function SuccessResp(resp, msg) {
 
 function HandQuery(err, res, resolve, reject) {
     if (err) {
+        // console.log(err);
         reject({
             "code": db_info.query_code.QUERY_FAIL,
-            "msg": err.message
+            "msg": Convert2String4Java(err.sqlMessage)
         });
         // throw Error(err);
     } else {
