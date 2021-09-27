@@ -10,7 +10,8 @@ module.exports = {
     NewStepHistory: NewStepHistory,
     GetStepToday: GetStepToday,
     GetSteps: GetSteps,
-    GetLastStepsRecord: GetLastStepsRecord
+    GetLastStepsRecord: GetLastStepsRecord,
+    GetLargestStepsEachDay: GetLargestStepsEachDay
 }
 
 function GetHistory(userID, startimestamp, endtimestamp) {
@@ -117,5 +118,18 @@ function GetLastStepsRecord(userID) {
     let sql = "SELECT userID, stepofday FROM history WHERE userID = ? AND starttime >= ? AND starttime <= ? AND endtime >= ? AND endtime <=? ORDER BY distanceofday DESC LIMIT 1";
     return new Promise(((resolve, reject) => {
         connection.query(sql, [userID, starttimestamp, endTimestamp, starttimestamp, endTimestamp], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetLargestStepsEachDay(userID, starttimestamp, endtimestamp) {
+    /*
+    * userID: <int>
+    * starttimestamp <Long>
+    * endtimestamp <Long>
+    * */
+
+    let sql = "SELECT DATE_FORMAT(h1.endtime, '%d/%m/%y') AS endtimestamp, MAX(h1.stepofday) AS total_step, DATE_FORMAT(h1.starttime, '%M %d, %y') AS starttime, DATE_FORMAT(h1.endtime, '%M %d, %y') AS endtime FROM history h1 WHERE userID = ? AND starttime >= ? AND endtime <= ? GROUP BY endtimestamp";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [userID, new Date(starttimestamp), new Date(endtimestamp)], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }

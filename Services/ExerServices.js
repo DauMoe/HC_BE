@@ -101,11 +101,11 @@ function CreateExercise(req, resp) {
 
     //Check fields
     req = req.body;
-    if (!req.hasOwnProperty("exerName")) Utils.ThrowMissingFields(resp, "exerName");
-    if (!req.hasOwnProperty("exerDesc")) Utils.ThrowMissingFields(resp, "exerDesc");
-    if (!req.hasOwnProperty("bmi_from")) Utils.ThrowMissingFields(resp, "bmi_from");
-    if (!req.hasOwnProperty("bmi_to")) Utils.ThrowMissingFields(resp, "bmi_to");
-    if (!req.hasOwnProperty("video")) Utils.ThrowMissingFields(resp, "video");
+    if (!req.hasOwnProperty("exerName"))    Utils.ThrowMissingFields(resp, "exerName");
+    if (!req.hasOwnProperty("exerDesc"))    Utils.ThrowMissingFields(resp, "exerDesc");
+    if (!req.hasOwnProperty("bmi_from"))    Utils.ThrowMissingFields(resp, "bmi_from");
+    if (!req.hasOwnProperty("bmi_to"))      Utils.ThrowMissingFields(resp, "bmi_to");
+    if (!req.hasOwnProperty("video"))       Utils.ThrowMissingFields(resp, "video");
 
     //Convert Base64 to MP4 video
     let video = req.video.replace(/^data:(.*?);base64,/, ""); // <--- make it any type
@@ -132,8 +132,8 @@ function CreateExercise(req, resp) {
 
 function GetRecomExercise(req, resp) {
     req = req.body;
-    if (!req.hasOwnProperty("grExer")) Utils.ThrowMissingFields(resp, "grExer");
-    if (!req.hasOwnProperty("BMI")) Utils.ThrowMissingFields(resp, "BMI");
+    if (!req.hasOwnProperty("grExer"))  Utils.ThrowMissingFields(resp, "grExer");
+    if (!req.hasOwnProperty("BMI"))     Utils.ThrowMissingFields(resp, "BMI");
     console.log(req.grExer);
     if (Boolean(req.grExer)) {
         //Get list group recommend exercise

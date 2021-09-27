@@ -7,7 +7,8 @@ module.exports = {
     GetStepsHistory: GetStepsHistory,
     NewHistory: NewHistory,
     NewStepHistory: NewStepHistory,
-    GetLastStepsRecord: GetLastStepsRecord
+    GetLastStepsRecord: GetLastStepsRecord,
+    GetStepChartData: GetStepChartData
 };
 
 /*
@@ -24,6 +25,7 @@ function GetHistory(req, resp) {
     if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
     if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
     if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
+    if (!req.hasOwnProperty("GetOneDay")) Utils.ThrowMissingFields(resp, "endtime");
 
     //Call services
     HistoryDAO.GetHistory(req.userID, req.starttime, req.endtime)
@@ -133,4 +135,23 @@ async function GetLastStepsRecord(req, resp) {
     } catch(err) {
         Utils.ResponseDAOFail(resp, [err]);
     }
+}
+
+async function GetStepChartData(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("userID"))      Utils.ThrowMissingFields(resp, "userID");
+    if (!req.hasOwnProperty("starttime"))   Utils.ThrowMissingFields(resp, "starttime");
+    if (!req.hasOwnProperty("endtime"))     Utils.ThrowMissingFields(resp, "endtime");
+    try {
+        let BigestStepEachDay = await HistoryDAO.GetLargestStepsEachDay(req.userID, req.starttime, req.endtime);
+        if(BigestStepEachDay.msg[0].starttime == null) {
+            Utils.SuccessResp(resp, []);
+        } else {
+            Utils.SuccessResp(resp, BigestStepEachDay.msg);
+        }
+    } catch(e) {
+        console.log(e.message);
+    }
+
+
 }

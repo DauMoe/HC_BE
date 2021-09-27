@@ -16,6 +16,7 @@ module.exports = {
     GET_RECORD: '/api/last_record',
     NEW_HISTORY: '/api/new_history',
     GET_HISTORY: '/api/list_history',
+    GET_STEP_CHART_DATA: '/api/get_chart_data',
 
     TEST: '/api/test'
 }

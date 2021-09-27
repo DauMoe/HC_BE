@@ -45,6 +45,10 @@ app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);
 app.post(API_URL.NEW_STEPS, HISTORY_SV.NewStepHistory);
 app.post(API_URL.GET_STEPS, HISTORY_SV.GetStepsHistory);
 app.post(API_URL.GET_RECORD, HISTORY_SV.GetLastStepsRecord);
+app.post(API_URL.GET_HISTORY, HISTORY_SV.GetHistory);
+
+//Chart data
+app.post(API_URL.GET_STEP_CHART_DATA, HISTORY_SV.GetStepChartData);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
