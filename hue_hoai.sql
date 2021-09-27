@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 20, 2021 at 07:06 AM
+-- Generation Time: Sep 27, 2021 at 05:14 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.32
 
@@ -163,8 +163,13 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`historyID`, `userID`, `gr_excerID`, `excerID`, `starttime`, `endtime`, `calo`, `step`, `stepofday`, `distance`, `distanceofday`) VALUES
-(25, 1, NULL, NULL, '2021-09-19 15:46:00', '2021-09-19 08:46:10', 0, 30, 30, 9, 9),
-(26, 1, NULL, NULL, '2021-09-19 15:46:00', '2021-09-19 08:46:10', 0, 30, 60, 9, 18);
+(43, 1, NULL, NULL, '2021-09-26 02:56:26', '2021-09-25 19:56:29', 0, 0, 0, 0, 0),
+(44, 1, NULL, NULL, '2021-09-26 02:56:37', '2021-09-25 19:56:52', 0, 19, 19, 5.7, 5.7),
+(45, 1, NULL, NULL, '2021-09-24 02:56:59', '2021-09-23 19:57:05', 0, 28, 47, 8.4, 14.1),
+(46, 1, NULL, NULL, '2021-09-26 02:58:46', '2021-09-25 19:59:01', 0, 8, 55, 2.4, 16.5),
+(47, 1, NULL, NULL, '2021-09-26 02:59:04', '2021-09-25 19:59:11', 0, 14, 69, 4.2, 20.7),
+(48, 1, NULL, NULL, '2021-09-22 13:04:49', '2021-09-22 06:05:20', 0, 3, 3, 0.9, 0.9),
+(49, 1, NULL, NULL, '2021-09-26 13:05:28', '2021-09-26 06:05:31', 0, 0, 3, 0, 0.9);
 
 -- --------------------------------------------------------
 
@@ -192,7 +197,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`userID`, `roles`, `username`, `password`, `step_range`, `tall`, `weight`, `age`, `BMI`, `ava_url`, `markbook_url`) VALUES
 (1, 1, 'moe1', '$2b$10$ravKzIwIhC7sPfRRPptY9el4iw5XqdYah5Ps6ql05F/nq7b483dgq', 0.3, 1.73, 78, 69, 22.5434, '', NULL),
-(22, 0, 'moe12', '$2b$10$Uu6awE/NnDBVgcSha.vYVOPRR/chgbZRh0kAZWwCc.lwvEGWNfd2y', 0.25, 0, 0, 0, 0, NULL, NULL);
+(22, 0, 'moe12', '$2b$10$Uu6awE/NnDBVgcSha.vYVOPRR/chgbZRh0kAZWwCc.lwvEGWNfd2y', 0.25, 0, 0, 0, 0, NULL, NULL),
+(45, 0, 'moe2', '$2b$10$X/xKTxyWq2HhPp0nt5l4ce7WAbgSu9rBBvRHBxcdSDZWZmIEzdNSy', 0, 0, 0, 0, 0, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -260,13 +266,13 @@ ALTER TABLE `gr_excercise`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Constraints for dumped tables

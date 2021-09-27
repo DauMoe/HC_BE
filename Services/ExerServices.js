@@ -143,7 +143,7 @@ function GetRecomExercise(req, resp) {
                 for (let i of res.msg) {
                     jResp.push({
                         "id": i.gr_excerID,
-                        "exer_name": Utils.Convert2String4Java(i.gr_name.toString()),
+                        "excer_name": Utils.Convert2String4Java(i.gr_name.toString()),
                         "bmi_from": i.bmi_from,
                         "bmi_to": i.bmi_to
                     });
@@ -161,7 +161,7 @@ function GetRecomExercise(req, resp) {
                 for (let j of res.msg) {
                     let temp = {
                         "id": j.excerID,
-                        "exer_name": Utils.Convert2String4Java(j.excer_name),
+                        "excer_name": Utils.Convert2String4Java(j.excer_name),
                         "desc": Utils.Convert2String4Java(j.description),
                         "bmi_from": Number.parseFloat(j.bmi_from),
                         "bmi_to": Number.parseFloat(j.bmi_to)
@@ -184,7 +184,7 @@ function GetGroupExercise(req, resp) {
             for (let i of res.msg) {
                 jResp.push({
                     "id": i.gr_excerID,
-                    "exer_name": Utils.Convert2String4Java(i.gr_name.toString()),
+                    "excer_name": Utils.Convert2String4Java("Nhóm bài tập " + i.gr_name.toString()),
                     "bmi_from": i.bmi_from,
                     "bmi_to": i.bmi_to
                 });
