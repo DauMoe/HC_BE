@@ -356,6 +356,35 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Chart Data",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"starttime\": 1632070800000,\r\n    \"endtime\": 1632675600000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/get_chart_data",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_chart_data"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
