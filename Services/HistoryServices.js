@@ -73,10 +73,11 @@ async function NewHistory(req, resp) {
 
     let result = await HistoryDAO.NewExerHistory(req.userID, req.gr_excerID, req.excerID, req.starttime, req.endtime);
 
-
-    console.log(result);
-
-    resp.send("hi");
+    if (result.code == 200) {
+        Utils.SuccessResp(resp, ["\"Create new history success!\""]);
+    } else {
+        Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(result.msg.message)]);
+    }
 }
 
 async function NewStepHistory(req, resp) {
