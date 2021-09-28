@@ -20,10 +20,10 @@ function GetHistory(userID, startimestamp, endtimestamp) {
     * startimestamp: <int>,
     * endtimestamp: <int>
     * */
-    let sql = "SELECT calo, starttime, endtime FROM history WHERE userID = ? AND starttime >= ? AND endtime <= ?";
+    let sql = "SELECT h1.userID, h1.excerID, h1.gr_excerID, h1.starttime, h1.endtime, h2.excer_name, h3.gr_name FROM history h1, excercise h2, gr_excercise h3 WHERE h1.gr_excerID IS NOT NULL AND h1.excerID IS NOT NULL AND h1.gr_excerID = h3.gr_excerID AND h1.excerID = h2.excerID AND h1.endtime <= ? AND h1.starttime >= ? AND h1.userID = ?";
 
     return new Promise(((resolve, reject) => {
-        connection.query(sql, [userID, new Date(startimestamp), new Date(endtimestamp)], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+        connection.query(sql, [new Date(endtimestamp),new Date(startimestamp), userID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }
 

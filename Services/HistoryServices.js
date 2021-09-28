@@ -29,7 +29,14 @@ function GetHistory(req, resp) {
     //Call services
     HistoryDAO.GetHistory(req.userID, req.starttime, req.endtime)
         .then(res => {
-            conso
+            console.log(res);
+            for (let i of res.msg) {
+                i.excer_name = Utils.Convert2String4Java(i.excer_name);
+                i.gr_name = Utils.Convert2String4Java(i.gr_name);
+                i.starttime = new Date(i.starttime).getTime();
+                i.endtime = new Date(i.endtime).getTime();
+            }
+            Utils.SuccessResp(resp, res.msg);
         })
         .catch(err => {
             Utils.ResponseDAOFail(resp, [err]);
