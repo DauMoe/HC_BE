@@ -25,12 +25,11 @@ function GetHistory(req, resp) {
     if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
     if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
     if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
-    if (!req.hasOwnProperty("GetOneDay")) Utils.ThrowMissingFields(resp, "endtime");
 
     //Call services
     HistoryDAO.GetHistory(req.userID, req.starttime, req.endtime)
         .then(res => {
-
+            conso
         })
         .catch(err => {
             Utils.ResponseDAOFail(resp, [err]);
