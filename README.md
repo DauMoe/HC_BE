@@ -1,5 +1,12 @@
 # Hướng dẫn sử dụng
 
+**CẤU TRÚC PROJECT:**  
+>**Folder DAO**: chứa các hàm gọi thẳng tới CSDL  
+>**Folder Services**: xử lý API gọi tới, xử lý request gửi lên, gọi hàm trong DAO tương ứng  
+>**index.js**: cấu hình và mapping các api với hàm trong `Services` tương ứng   
+>**Utils**: chứa các file tiện ích (cấu trúc dữ liệu trả về, các hàm dùng chung, v.v)  
+----
+
 **NOTE:**
 Chú ý phiên bản DB và file *postman_collection1* để import lại!
 ----
