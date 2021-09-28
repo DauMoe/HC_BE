@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 27, 2021 at 05:14 PM
+-- Generation Time: Sep 28, 2021 at 12:35 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.32
 
@@ -120,23 +120,24 @@ CREATE TABLE `gr_excercise` (
   `gr_excerID` int(11) NOT NULL,
   `gr_name` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
   `bmi_from` float NOT NULL DEFAULT 0,
-  `bmi_to` float NOT NULL DEFAULT 0
+  `bmi_to` float NOT NULL DEFAULT 0,
+  `thum_url` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `gr_excercise`
 --
 
-INSERT INTO `gr_excercise` (`gr_excerID`, `gr_name`, `bmi_from`, `bmi_to`) VALUES
-(1, 'Cấp độ dễ', 15, 18.5),
-(2, 'Cấp độ trung bình', 18.6, 29.9),
-(3, 'Cấp độ nâng cao', 30, 40),
-(4, 'Bodyweight cho lưng và bắp tay', 18.5, 30),
-(5, 'Bodyweight cho ngực và tay sau', 18.5, 25),
-(6, 'Bodyweight giúp tăng cơ', 25, 35),
-(7, 'Bodyweight cho chân', 25, 40),
-(8, 'Bodyweight cho cơ core', 18.5, 35),
-(9, 'steps', 0, 0);
+INSERT INTO `gr_excercise` (`gr_excerID`, `gr_name`, `bmi_from`, `bmi_to`, `thum_url`) VALUES
+(1, 'Cấp độ dễ', 15, 18.5, '.\\picture\\gr_excer\\de.jpg'),
+(2, 'Cấp độ trung bình', 18.6, 29.9, '.\\picture\\gr_excer\\tb.jpg'),
+(3, 'Cấp độ nâng cao', 30, 40, '.\\picture\\gr_excer\\kho.png'),
+(4, 'Bodyweight cho lưng và bắp tay', 18.5, 30, '.\\picture\\gr_excer\\lungvabaptay.jpg'),
+(5, 'Bodyweight cho ngực và tay sau', 18.5, 25, '.\\picture\\gr_excer\\nguc.png'),
+(6, 'Bodyweight giúp tăng cơ', 25, 35, '.\\picture\\gr_excer\\tangco.jpg'),
+(7, 'Bodyweight cho chân', 25, 40, '.\\picture\\gr_excer\\chan.jpg'),
+(8, 'Bodyweight cho cơ core', 18.5, 35, '.\\picture\\gr_excer\\cocore.jpg'),
+(9, 'steps', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -169,7 +170,8 @@ INSERT INTO `history` (`historyID`, `userID`, `gr_excerID`, `excerID`, `starttim
 (46, 1, NULL, NULL, '2021-09-26 02:58:46', '2021-09-25 19:59:01', 0, 8, 55, 2.4, 16.5),
 (47, 1, NULL, NULL, '2021-09-26 02:59:04', '2021-09-25 19:59:11', 0, 14, 69, 4.2, 20.7),
 (48, 1, NULL, NULL, '2021-09-22 13:04:49', '2021-09-22 06:05:20', 0, 3, 3, 0.9, 0.9),
-(49, 1, NULL, NULL, '2021-09-26 13:05:28', '2021-09-26 06:05:31', 0, 0, 3, 0, 0.9);
+(49, 1, NULL, NULL, '2021-09-26 13:05:28', '2021-09-26 06:05:31', 0, 0, 3, 0, 0.9),
+(50, 1, NULL, NULL, '2021-09-28 10:46:19', '2021-09-28 03:46:21', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -266,7 +268,7 @@ ALTER TABLE `gr_excercise`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `user`

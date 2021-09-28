@@ -27,7 +27,7 @@ function GetHistory(userID, startimestamp, endtimestamp) {
     }));
 }
 
-function NewExerHistory(info) {
+function NewExerHistory(userID, gr_excerID, excerID, starttime, endtime) {
     /*
     * info = {
     *       userID: <int>,
@@ -39,16 +39,15 @@ function NewExerHistory(info) {
     * }
     * */
 
-    let sql = "INSERT INTO history (userID, gr_excerID, excerID, starttime, endtime, calo) VALUES (?, ?, ?, ?, ?, ?)";
+    let sql = "INSERT INTO history (userID, gr_excerID, excerID, starttime, endtime) VALUES (?, ?, ?, ?, ?)";
 
     return new Promise(((resolve, reject) => {
         connection.query(sql, [
-            info.userID,
-            info.gr_excerID,
-            info.excerID,
-            new Date(info.starttime),
-            new Date(info.endtime),
-            info.calo,
+            userID,
+            gr_excerID,
+            excerID,
+            new Date(starttime),
+            new Date(endtime)
         ], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
 }
@@ -128,7 +127,7 @@ function GetLargestStepsEachDay(userID, starttimestamp, endtimestamp) {
     * endtimestamp <Long>
     * */
 
-    let sql = "SELECT DATE_FORMAT(h1.endtime, '%d/%m/%y') AS endtimestamp, MAX(h1.stepofday) AS total_step, DATE_FORMAT(h1.starttime, '%M %d, %y') AS starttime, DATE_FORMAT(h1.endtime, '%M %d, %y') AS endtime FROM history h1 WHERE userID = ? AND starttime >= ? AND endtime <= ? GROUP BY endtimestamp";
+    let sql = "SELECT DATE_FORMAT(h1.endtime, '%d/%m/%y') AS endtimestamp, MAX(h1.stepofday) AS total_step, DATE_FORMAT(h1.starttime, '%d/%m') AS starttime, DATE_FORMAT(h1.endtime, '%d/%m') AS endtime FROM history h1 WHERE userID = ? AND starttime >= ? AND endtime <= ? GROUP BY endtimestamp";
     return new Promise(((resolve, reject) => {
         connection.query(sql, [userID, new Date(starttimestamp), new Date(endtimestamp)], (err, res) => Utils.HandQuery(err, res, resolve, reject));
     }));
