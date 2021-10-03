@@ -209,7 +209,10 @@ function GetDetailExercise(req, resp) {
             path = path.replace(path.charAt(0), '');
             path = __dirname + '/..' + path;
             //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
-            res.msg[0].videoBase64 = fs.readFileSync(path, {encoding: 'base64'});
+            res.msg[0].videoBase64 = Utils.Convert2String4Java(fs.readFileSync(path, {encoding: 'base64'}));
+            delete res.msg[0].excer_url;
+            res.msg[0].excer_name = Utils.Convert2String4Java(res.msg[0].excer_name);
+            res.msg[0].description = Utils.Convert2String4Java(res.msg[0].description);
             Utils.SuccessResp(resp, [res.msg[0]]);
         })
         .catch(err => {

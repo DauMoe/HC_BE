@@ -14,17 +14,24 @@ module.exports = {
     GetLargestStepsEachDay: GetLargestStepsEachDay
 }
 
-function GetHistory(userID, startimestamp, endtimestamp) {
+function GetHistory(userID, startimestamp = null, endtimestamp = null) {
     /*
     * userID: <int>,
     * startimestamp: <int>,
     * endtimestamp: <int>
     * */
-    let sql = "SELECT h1.userID, h1.excerID, h1.gr_excerID, h1.starttime, h1.endtime, h2.excer_name, h3.gr_name FROM history h1, excercise h2, gr_excercise h3 WHERE h1.gr_excerID IS NOT NULL AND h1.excerID IS NOT NULL AND h1.gr_excerID = h3.gr_excerID AND h1.excerID = h2.excerID AND h1.endtime <= ? AND h1.starttime >= ? AND h1.userID = ?";
-
-    return new Promise(((resolve, reject) => {
-        connection.query(sql, [new Date(endtimestamp),new Date(startimestamp), userID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
-    }));
+    let sql = "";
+    if (startimestamp != null && endtimestamp != null) {
+        sql = "SELECT h1.userID, h1.excerID, h1.gr_excerID, h1.starttime, h1.endtime, CAST(h1.endtime AS Date) AS datestamp, h2.excer_name, h3.gr_name FROM history h1, excercise h2, gr_excercise h3 WHERE h1.gr_excerID IS NOT NULL AND h1.excerID IS NOT NULL AND h1.gr_excerID = h3.gr_excerID AND h1.excerID = h2.excerID AND h1.endtime <= ? AND h1.starttime >= ? AND h1.userID = ?";
+        return new Promise(((resolve, reject) => {
+            connection.query(sql, [new Date(endtimestamp),new Date(startimestamp), userID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+        }));
+    } else {
+        sql = "SELECT h1.userID, h1.excerID, h1.gr_excerID, h1.starttime, h1.endtime, CAST(h1.endtime AS Date) AS datestamp, h2.excer_name, h3.gr_name FROM history h1, excercise h2, gr_excercise h3 WHERE h1.gr_excerID IS NOT NULL AND h1.excerID IS NOT NULL AND h1.gr_excerID = h3.gr_excerID AND h1.excerID = h2.excerID AND h1.userID = ?";
+        return new Promise(((resolve, reject) => {
+            connection.query(sql, [userID], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+        }));
+    }
 }
 
 function NewExerHistory(userID, gr_excerID, excerID, starttime, endtime) {
