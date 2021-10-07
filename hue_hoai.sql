@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2021 at 12:35 PM
+-- Generation Time: Oct 03, 2021 at 04:46 AM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.2.32
 
@@ -171,7 +171,10 @@ INSERT INTO `history` (`historyID`, `userID`, `gr_excerID`, `excerID`, `starttim
 (47, 1, NULL, NULL, '2021-09-26 02:59:04', '2021-09-25 19:59:11', 0, 14, 69, 4.2, 20.7),
 (48, 1, NULL, NULL, '2021-09-22 13:04:49', '2021-09-22 06:05:20', 0, 3, 3, 0.9, 0.9),
 (49, 1, NULL, NULL, '2021-09-26 13:05:28', '2021-09-26 06:05:31', 0, 0, 3, 0, 0.9),
-(50, 1, NULL, NULL, '2021-09-28 10:46:19', '2021-09-28 03:46:21', 0, 0, 0, 0, 0);
+(50, 1, NULL, NULL, '2021-09-28 10:46:19', '2021-09-28 03:46:21', 0, 0, 0, 0, 0),
+(51, 1, 2, 3, '2021-09-28 09:46:52', '2021-09-28 03:54:53', 0, NULL, 0, 0, 0),
+(52, 1, 2, 3, '2021-09-29 09:46:52', '2021-09-28 23:54:53', 0, NULL, 0, 0, 0),
+(53, 1, 2, 3, '2021-09-29 00:00:00', '2021-09-28 17:00:00', 0, NULL, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -268,7 +271,7 @@ ALTER TABLE `gr_excercise`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `historyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- AUTO_INCREMENT for table `user`

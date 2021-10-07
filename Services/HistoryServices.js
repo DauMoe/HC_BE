@@ -23,13 +23,20 @@ function GetHistory(req, resp) {
 
     //Check fields
     if (!req.hasOwnProperty("userID")) Utils.ThrowMissingFields(resp, "userID");
-    if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
-    if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
+    // if (!req.hasOwnProperty("starttime")) Utils.ThrowMissingFields(resp, "starttime");
+    // if (!req.hasOwnProperty("endtime")) Utils.ThrowMissingFields(resp, "endtime");
 
     //Call services
     HistoryDAO.GetHistory(req.userID, req.starttime, req.endtime)
         .then(res => {
-            conso
+            for (let i of res.msg) {
+                i.excer_name = Utils.Convert2String4Java(i.excer_name);
+                i.gr_name = Utils.Convert2String4Java(i.gr_name);
+                i.starttime = new Date(i.starttime).getTime();
+                i.endtime = new Date(i.endtime).getTime();
+                i.datestamp = new Date(i.datestamp).getTime();
+            }
+            Utils.SuccessResp(resp, res.msg);
         })
         .catch(err => {
             Utils.ResponseDAOFail(resp, [err]);
