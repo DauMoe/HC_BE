@@ -8,8 +8,29 @@ module.exports = {
     GetRecomExercise: GetRecomExercise,
     GetGroupExercise: GetGroupExercise,
     GetDetailExercise: GetDetailExercise,
+    GetExercisesByGrID: GetExercisesByGrID,
     Test: Test
 };
+
+async function GetExercisesByGrID(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("grID")) Utils.ThrowMissingFields(resp, "grID");
+
+    let jResp = [];
+    let ListExercises = await ExcerDAO.GetExercisesByGrID(req.grID);
+    // console.log(ListExercises.msg);
+    for (let i of ListExercises.msg) {
+        jResp.push({
+            "gr_name": Utils.Convert2String4Java(i.gr_name),
+            "excer_name": Utils.Convert2String4Java(i.excer_name),
+            "excerID": i.excerID,
+            "bmi_from": i.bmi_from,
+            "bmi_to": i.bmi_to,
+            "description": Utils.Convert2String4Java(i.description)
+        });
+    }
+    Utils.SuccessResp(resp, jResp);
+}
 
 function GetExercise(req, resp) {
     let excerID = -10;
@@ -183,7 +204,7 @@ function GetGroupExercise(req, resp) {
             let jResp = [];
             for (let i of res.msg) {
                 jResp.push({
-                    "id": i.gr_excerID,
+                    "excerID": i.gr_excerID,
                     "excer_name": Utils.Convert2String4Java("Nhóm bài tập " + i.gr_name.toString()),
                     "bmi_from": i.bmi_from,
                     "bmi_to": i.bmi_to
@@ -209,7 +230,10 @@ function GetDetailExercise(req, resp) {
             path = path.replace(path.charAt(0), '');
             path = __dirname + '/..' + path;
             //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
-            res.msg[0].videoBase64 = fs.readFileSync(path, {encoding: 'base64'});
+            res.msg[0].videoBase64 = Utils.Convert2String4Java(fs.readFileSync(path, {encoding: 'base64'}));
+            res.msg[0].excer_name = Utils.Convert2String4Java(res.msg[0].excer_name);
+            res.msg[0].description = Utils.Convert2String4Java(res.msg[0].description);
+            delete res.msg[0].excer_url;
             Utils.SuccessResp(resp, [res.msg[0]]);
         })
         .catch(err => {

@@ -12,7 +12,15 @@ module.exports = {
     CreateNewExcer: CreateNewExcer,
     GetRecommendGroupExercise: GetRecommendGroupExercise,
     GetRecommendExercise: GetRecommendExercise,
-    GetGroupExercise: GetGroupExercise
+    GetGroupExercise: GetGroupExercise,
+    GetExercisesByGrID: GetExercisesByGrID
+}
+
+function GetExercisesByGrID(grID) {
+    let sql = "SELECT h2.gr_name, h3.* FROM ex_mapping h1 INNER JOIN gr_excercise h2 ON h1.gr_excerID = h2.gr_excerID INNER JOIN excercise h3 ON h1.excerID = h3.excerID WHERE h1.gr_excerID = ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [grID],(err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
 }
 
 function GetAllExcer() {
