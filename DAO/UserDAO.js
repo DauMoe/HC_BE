@@ -8,7 +8,16 @@ module.exports = {
     UpdateUserHealthInfo: UpdateUserHealthInfo,
     GetOneUser: GetOneUser,
     CreateNewUser: CreateNewUser,
-    GetHealthInfo: GetHealthInfo
+    GetHealthInfo: GetHealthInfo,
+    UpdatePassword: UpdatePassword
+}
+
+function UpdatePassword(username, newpass) {
+    let sql = "UPDATE user SET password = ? WHERE user.username = ?;";
+
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [newpass, username], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
 }
 
 function GetOneUser(username) {

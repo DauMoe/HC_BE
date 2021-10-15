@@ -3,6 +3,7 @@ module.exports = {
     CREATE_USER: '/api/new_user',
     UPDATE_HEALTH: '/api/update_info',
     LOGOUT: '/api/logout',
+    CHANGE_PASS: '/api/change_pass',
 
     GET_EXER: '/api/list_exer',
     CREATE_EXER: '/api/new_exer',

@@ -11,10 +11,54 @@ const SALT_ROUNDS = 10;
 module.exports = {
     Login: Login,
     CreateNewUser: CreateNewUser,
-    EditUserHealthyInfo: EditUserHealthyInfo
+    EditUserHealthyInfo: EditUserHealthyInfo,
+    ChangePassword: ChangePassword
 }
 
 //Handling request
+
+async function ChangePassword(req, resp) {
+    /*
+    * username: <String>,
+    * password: <String>
+    * newpass:  <String>
+    * */
+
+    //Check fields
+    req = req.body;
+    if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
+    if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
+    if (!req.hasOwnProperty("newpass"))  Utils.ThrowMissingFields(resp, "newpass");
+
+    let res = await UserDAO.GetOneUser(req.username);
+    if (res.msg.length == 0) {
+        Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("User is not existed")]);
+        return;
+    };
+    bcrypt.compare(req.password, res.msg[0].password, (err, result) => {
+        if (err) {
+            console.log("User login fail (Compare pass err)");
+            Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Err when compare pass")]);
+            // throw Error(err);
+        }
+        if (result) {
+            bcrypt.hash(req.newpass, SALT_ROUNDS).then(hash => {
+                UserDAO.UpdatePassword(req.username, hash)
+                    .then(res1 => {
+                        Utils.SuccessResp(resp, [Utils.Convert2String4Java("Update password successful!")]);
+                    })
+                    .catch(err => {
+                        console.log(err);
+                        Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java(err)]);
+                    });
+            });
+
+        } else {
+            console.log("Wrong password in update pass");
+            Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Wrong password!")]);
+        }
+    });
+}
 
 function Login(req, resp) {
     /*
@@ -24,9 +68,13 @@ function Login(req, resp) {
 
     //Check fields
     req = req.body;
+    let LoginWithFinger = false;
     console.log(req);
     if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
-    if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
+    if (req.hasOwnProperty("LoginWithFinger")) LoginWithFinger = req.LoginWithFinger;
+    if (!req.hasOwnProperty("password") && !LoginWithFinger) Utils.ThrowMissingFields(resp, "password");
+
+    let password = req.password || "";
 
     //Handle
     UserDAO.GetOneUser(req.username)
@@ -35,15 +83,14 @@ function Login(req, resp) {
                 Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("User is not existed")]);
                 return;
             };
-
             //Compare hash password
-            bcrypt.compare(req.password, res.msg[0].password, (err, result) => {
+            bcrypt.compare(password, res.msg[0].password, (err, result) => {
                 if (err) {
-                    console.log("User login fail (Conpare pass err)");
+                    console.log("User login fail (Compare pass err)");
                     Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("Err when compare pass")]);
                     // throw Error(err);
                 }
-                if (result) {
+                if (LoginWithFinger || result) {
                     let jResp = JWT_Utils.GenToken({
                         "username": res.msg[0].username,
                         "isAdmin": res.msg[0].roles
