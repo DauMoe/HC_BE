@@ -13,7 +13,10 @@ function ThrowMissingFields(resp, FieldName) {
 function ResponseDAOFail(resp, data) {
     resp.setHeader("content-type", "application/json");
     resp.status(200);
-    resp.json(data);
+    resp.json({
+        code: 201,
+        msg: data
+    });
     return;
 }
 

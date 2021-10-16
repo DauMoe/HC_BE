@@ -12,7 +12,33 @@ module.exports = {
     CreateNewExcer: CreateNewExcer,
     GetRecommendGroupExercise: GetRecommendGroupExercise,
     GetRecommendExercise: GetRecommendExercise,
-    GetGroupExercise: GetGroupExercise
+    GetGroupExercise: GetGroupExercise,
+    Rating: Rating
+}
+
+function Rating(exerID, star) {
+    let sql = "UPDATE excercise SET ";
+    switch (star) {
+        case 1:
+            sql += "one = one + 1";
+            break;
+        case 2:
+            sql += "two = two + 1";
+            break;
+        case 3:
+            sql += "three = three + 1";
+            break;
+        case 4:
+            sql += "four = four + 1";
+            break;
+        case 5:
+            sql += "five = five + 1";
+            break;
+    }
+    sql += " WHERE excerID = ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [exerID],(err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
 }
 
 function GetAllExcer() {

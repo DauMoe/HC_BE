@@ -8,8 +8,23 @@ module.exports = {
     GetRecomExercise: GetRecomExercise,
     GetGroupExercise: GetGroupExercise,
     GetDetailExercise: GetDetailExercise,
+    Rating: Rating,
     Test: Test
 };
+
+function Rating(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("exerID")) Utils.ThrowMissingFields(resp, "exerID");
+    if (!req.hasOwnProperty("star")) Utils.ThrowMissingFields(resp, "star");
+
+    ExcerDAO.Rating(Number.parseInt(req.exerID), Number.parseInt(req.star))
+        .then(res => {
+            Utils.SuccessResp(resp, ["\"Rating OK\""]);
+        })
+        .catch(err => {
+            tils.ResponseDAOFail(resp, ["\"" + err + "\""]);
+        });
+}
 
 function GetExercise(req, resp) {
     let excerID = -10;
@@ -48,7 +63,7 @@ function GetExercise(req, resp) {
                 Utils.SuccessResp(resp, jResp);
             })
             .catch(err => {
-                Utils.ResponseDAOFail(resp, err);
+                Utils.ResponseDAOFail(resp, [Utils.Convert2String4Java(err)]);
             });
     } else {
         //get one
@@ -182,11 +197,25 @@ function GetGroupExercise(req, resp) {
         .then(res => {
             let jResp = [];
             for (let i of res.msg) {
+                // console.log(i.thum_url);
+                try {
+                    let path = i.thum_url.replace(/\\/g, '/');
+                    path = path.replace(path.charAt(0), '');
+                    path = __dirname + '/..' + path;
+                    //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
+                    i.thumBase64 = "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'});
+
+                } catch {
+                    i.thumBase64 = "";
+                }
+                delete i.thum_url;
+                // i.thumBase64 = "";
                 jResp.push({
                     "id": i.gr_excerID,
                     "excer_name": Utils.Convert2String4Java("Nhóm bài tập " + i.gr_name.toString()),
                     "bmi_from": i.bmi_from,
-                    "bmi_to": i.bmi_to
+                    "bmi_to": i.bmi_to,
+                    "thumBase64": Utils.Convert2String4Java(i.thumBase64)
                 });
             }
             Utils.SuccessResp(resp, jResp);
