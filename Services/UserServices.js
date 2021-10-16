@@ -12,10 +12,34 @@ module.exports = {
     Login: Login,
     CreateNewUser: CreateNewUser,
     EditUserHealthyInfo: EditUserHealthyInfo,
-    ChangePassword: ChangePassword
+    ChangePassword: ChangePassword,
+    GetUserInfo: GetUserInfo
 }
 
 //Handling request
+
+function GetUserInfo(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
+
+    UserDAO.GetOneUser(req.username)
+        .then(result => {
+            let jResp = [];
+
+            jResp.push({
+                "step_range": result.msg[0].step_range,
+                "height": result.msg[0].tall,
+                "weight": result.msg[0].weight,
+                "bmi": result.msg[0].BMI,
+                "age": result.msg[0].age
+            });
+            Utils.SuccessResp(resp, jResp);
+        })
+        .catch(err => {
+            console.log(err);
+            Utils.ResponseDAOFail(resp, err);
+        });
+}
 
 async function ChangePassword(req, resp) {
     /*

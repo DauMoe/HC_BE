@@ -33,6 +33,7 @@ app.post(API_URL.LOGIN, USER_SV.Login);
 app.post(API_URL.CREATE_USER, USER_SV.CreateNewUser);
 app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 app.post(API_URL.CHANGE_PASS, USER_SV.ChangePassword);
+app.post(API_URL.GET_INFO, USER_SV.GetUserInfo);
 
 //Exercises API
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);

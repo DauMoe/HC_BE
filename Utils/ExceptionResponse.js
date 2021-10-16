@@ -13,10 +13,7 @@ function ThrowMissingFields(resp, FieldName) {
 function ResponseDAOFail(resp, data) {
     resp.setHeader("content-type", "application/json");
     resp.status(200);
-    resp.json({
-        code: 201,
-        msg: data
-    });
+    resp.json(data);
     return;
 }
 
@@ -43,7 +40,7 @@ function HandQuery(err, res, resolve, reject) {
         // console.log(err);
         reject({
             "code": db_info.query_code.QUERY_FAIL,
-            "msg": Convert2String4Java(err.sqlMessage)
+            "msg": [Convert2String4Java(err.sqlMessage)]
         });
         // throw Error(err);
     } else {
