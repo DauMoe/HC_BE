@@ -21,12 +21,18 @@ async function GetExByGrID(req, resp) {
     // console.log(result);
     let jResp = [];
     for (let i of result.msg) {
+        let numofStar = Number.parseInt(i.one) + Number.parseInt(i.two)*2 + Number.parseInt(i.three)*3 + Number.parseInt(i.four)*4 + Number.parseInt(i.five)*5;
+        let numofRater = Number.parseInt(i.one) + Number.parseInt(i.two) + Number.parseInt(i.three) + Number.parseInt(i.four) + Number.parseInt(i.five)
+        if (numofRater == 0) {
+            numofRater = 1;
+            numofStar = 0;
+        }
         jResp.push({
             "excerID": i.excerID,
             "excer_name": Utils.Convert2String4Java(i.excer_name),
             "bmi_from": i.bmi_from,
             "bmi_to": i.bmi_to,
-            "description": Utils.Convert2String4Java(i.description)
+            "description": Utils.Convert2String4Java("Rating: " + Math.round(numofStar/numofRater) + "/5\n" + i.description)
         });
     }
     Utils.SuccessResp(resp, jResp);
@@ -36,13 +42,14 @@ function Rating(req, resp) {
     req = req.body;
     if (!req.hasOwnProperty("exerID")) Utils.ThrowMissingFields(resp, "exerID");
     if (!req.hasOwnProperty("star")) Utils.ThrowMissingFields(resp, "star");
-
+    console.log(req);
     ExcerDAO.Rating(Number.parseInt(req.exerID), Number.parseInt(req.star))
         .then(res => {
             Utils.SuccessResp(resp, ["\"Rating OK\""]);
         })
         .catch(err => {
-            tils.ResponseDAOFail(resp, ["\"" + err + "\""]);
+            console.log(err);
+            Utils.ResponseDAOFail(resp, ["\"" + err + "\""]);
         });
 }
 
@@ -72,12 +79,18 @@ function GetExercise(req, resp) {
                 // form.pipe(resp);
                 let jResp = [];
                 for (let i of res.msg) {
+                    let numofStar = Number.parseInt(i.one) + Number.parseInt(i.two)*2 + Number.parseInt(i.three)*3 + Number.parseInt(i.four)*4 + Number.parseInt(i.five)*5;
+                    let numofRater = Number.parseInt(i.one) + Number.parseInt(i.two) + Number.parseInt(i.three) + Number.parseInt(i.four) + Number.parseInt(i.five)
+                    if (numofRater == 0) {
+                        numofRater = 0;
+                        numofStar = 1;
+                    }
                     jResp.push({
                         "excerID": i.excerID,
                         "excer_name": Utils.Convert2String4Java(i.excer_name),
                         "bmi_from": i.bmi_from,
                         "bmi_to": i.bmi_to,
-                        "description": Utils.Convert2String4Java(i.description)
+                        "description": Utils.Convert2String4Java("Rating: " + Math.round(numofStar/numofRater) + "/5\n" + i.description)
                     })
                 }
                 Utils.SuccessResp(resp, jResp);
@@ -272,8 +285,16 @@ function GetDetailExercise(req, resp) {
             //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
             res.msg[0].videoBase64 = Utils.Convert2String4Java(fs.readFileSync(path, {encoding: 'base64'}));
             delete res.msg[0].excer_url;
+            let numofStar = Number.parseInt(res.msg[0].one) + Number.parseInt(res.msg[0].two)*2 + Number.parseInt(res.msg[0].three)*3 + Number.parseInt(res.msg[0].four)*4 + Number.parseInt(res.msg[0].five)*5;
+            let numofRater = Number.parseInt(res.msg[0].one) + Number.parseInt(res.msg[0].two) + Number.parseInt(res.msg[0].three) + Number.parseInt(res.msg[0].four) + Number.parseInt(res.msg[0].five)
+            console.log(numofStar);
+            console.log(numofRater);
+            if (numofStar == 0) {
+                numofRater = 0;
+                numofStar = 1;
+            }
             res.msg[0].excer_name = Utils.Convert2String4Java(res.msg[0].excer_name);
-            res.msg[0].description = Utils.Convert2String4Java(res.msg[0].description);
+            res.msg[0].description = Utils.Convert2String4Java("Rating: " + Math.round(numofStar/numofRater) + "/5\n" + res.msg[0].description);
             Utils.SuccessResp(resp, [res.msg[0]]);
         })
         .catch(err => {

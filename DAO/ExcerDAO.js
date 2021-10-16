@@ -42,6 +42,8 @@ function Rating(exerID, star) {
         case 5:
             sql += "five = five + 1";
             break;
+        default:
+            sql += "one = one";
     }
     sql += " WHERE excerID = ?";
     return new Promise(((resolve, reject) => {
