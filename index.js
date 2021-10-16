@@ -41,6 +41,7 @@ app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
 app.post(API_URL.GET_GROUP_EXER, EXER_SV.GetGroupExercise);
 app.post(API_URL.GET_DETAIL_EXER, EXER_SV.GetDetailExercise);
 app.post(API_URL.RATING, EXER_SV.Rating);
+app.post(API_URL.GET_EXER_OF_GROUP, EXER_SV.GetExByGrID)
 
 //History API
 app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);

@@ -9,8 +9,28 @@ module.exports = {
     GetGroupExercise: GetGroupExercise,
     GetDetailExercise: GetDetailExercise,
     Rating: Rating,
+    GetExByGrID: GetExByGrID,
     Test: Test
 };
+
+async function GetExByGrID(req, resp) {
+    req = req.body;
+    if (!req.hasOwnProperty("grID")) Utils.ThrowMissingFields(resp, "grID");
+
+    let result = await ExcerDAO.GetExBygrID(Number.parseInt(req.grID));
+    // console.log(result);
+    let jResp = [];
+    for (let i of result.msg) {
+        jResp.push({
+            "excerID": i.excerID,
+            "excer_name": Utils.Convert2String4Java(i.excer_name),
+            "bmi_from": i.bmi_from,
+            "bmi_to": i.bmi_to,
+            "description": Utils.Convert2String4Java(i.description)
+        });
+    }
+    Utils.SuccessResp(resp, jResp);
+}
 
 function Rating(req, resp) {
     req = req.body;
@@ -156,11 +176,23 @@ function GetRecomExercise(req, resp) {
             .then(res => {
                 let jResp = [];
                 for (let i of res.msg) {
+                    try {
+                        let path = i.thum_url.replace(/\\/g, '/');
+                        path = path.replace(path.charAt(0), '');
+                        path = __dirname + '/..' + path;
+                        //https://stackoverflow.com/questions/28834835/readfile-in-base64-nodejs
+                        i.thumBase64 = "data:image/jpeg;base64," + fs.readFileSync(path, {encoding: 'base64'});
+
+                    } catch {
+                        i.thumBase64 = "";
+                    }
+                    delete i.thum_url;
                     jResp.push({
-                        "id": i.gr_excerID,
+                        "excerID": i.gr_excerID,
                         "excer_name": Utils.Convert2String4Java(i.gr_name.toString()),
                         "bmi_from": i.bmi_from,
-                        "bmi_to": i.bmi_to
+                        "bmi_to": i.bmi_to,
+                        "thumBase64": Utils.Convert2String4Java(i.thumBase64)
                     });
                 }
                 Utils.SuccessResp(resp, jResp);
@@ -211,7 +243,7 @@ function GetGroupExercise(req, resp) {
                 delete i.thum_url;
                 // i.thumBase64 = "";
                 jResp.push({
-                    "id": i.gr_excerID,
+                    "excerID": i.gr_excerID,
                     "excer_name": Utils.Convert2String4Java("Nhóm bài tập " + i.gr_name.toString()),
                     "bmi_from": i.bmi_from,
                     "bmi_to": i.bmi_to,

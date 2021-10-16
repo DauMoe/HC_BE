@@ -12,6 +12,7 @@ module.exports = {
     GET_GROUP_EXER: '/api/get_group_exercise',
     GET_DETAIL_EXER: '/api/get_detail_exercise',
     RATING: '/api/rating',
+    GET_EXER_OF_GROUP: '/api/get_detail_by_groupID',
 
     NEW_STEPS: '/api/new_steps',
     GET_STEPS: '/api/list_steps',

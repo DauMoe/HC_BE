@@ -13,7 +13,15 @@ module.exports = {
     GetRecommendGroupExercise: GetRecommendGroupExercise,
     GetRecommendExercise: GetRecommendExercise,
     GetGroupExercise: GetGroupExercise,
+    GetExBygrID: GetExBygrID,
     Rating: Rating
+}
+
+function GetExBygrID(grID) {
+    let sql = "SELECT * FROM ex_mapping h1 INNER JOIN excercise h2 ON h1.excerID = h2.excerID AND h1.gr_excerID = ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [grID],(err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
 }
 
 function Rating(exerID, star) {
