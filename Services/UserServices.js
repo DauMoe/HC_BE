@@ -54,6 +54,8 @@ async function ChangePassword(req, resp) {
     if (!req.hasOwnProperty("password")) Utils.ThrowMissingFields(resp, "password");
     if (!req.hasOwnProperty("newpass"))  Utils.ThrowMissingFields(resp, "newpass");
 
+    console.log(req);
+
     let res = await UserDAO.GetOneUser(req.username);
     if (res.msg.length == 0) {
         Utils.CustomMsg(resp, 201, [Utils.Convert2String4Java("User is not existed")]);

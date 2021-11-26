@@ -1,4 +1,6 @@
 const express = require('express');
+const https = require("https");
+const fs = require("fs");
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -7,6 +9,14 @@ const AuthMiddle = require('./Utils/Autho');
 const USER_SV = require('./Services/UserServices');
 const EXER_SV = require('./Services/ExerServices');
 const HISTORY_SV = require('./Services/HistoryServices');
+const PORT = 8080;
+
+
+//SSL
+const privateKey    = fs.readFileSync("./credential/cert.key", 'utf-8');
+const publicKey     = fs.readFileSync("./credential/cert.pem", 'utf-8');
+const credential    = {key: privateKey, cert: publicKey, passphrase: 'daumoe'};
+const httpsServer   = https.createServer(credential, app);
 
 //Config
 app.use(cors()); //Pass CORS
@@ -56,6 +66,10 @@ app.post(API_URL.GET_STEP_CHART_DATA, HISTORY_SV.GetStepChartData);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);
-app.listen(8080, function() {
-    console.log("Listen at http://<your device's IP>:8080");
+// app.listen(8080, function() {
+//     console.log("Listen at http://<your device's IP>:8080");
+// });
+
+httpsServer.listen(PORT, function() {
+   console.log('Server is running at: "https://<your device\'s IP>:' + PORT + '"');
 });
