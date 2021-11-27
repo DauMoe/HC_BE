@@ -9,7 +9,23 @@ module.exports = {
     GetOneUser: GetOneUser,
     CreateNewUser: CreateNewUser,
     GetHealthInfo: GetHealthInfo,
-    UpdatePassword: UpdatePassword
+    UpdatePassword: UpdatePassword,
+    SetAvaDAO: SetAvaDAO,
+    GetAvaDAO: GetAvaDAO
+}
+
+function SetAvaDAO(path, uid) {
+    let sql = "UPDATE user SET ava_url = ? WHERE userID = ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [path, uid], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
+}
+
+function GetAvaDAO(uid) {
+    let sql = "SELECT ava_url FROM user WHERE userID = ?";
+    return new Promise(((resolve, reject) => {
+        connection.query(sql, [uid], (err, res) => Utils.HandQuery(err, res, resolve, reject));
+    }));
 }
 
 function UpdatePassword(username, newpass) {

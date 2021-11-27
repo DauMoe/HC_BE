@@ -5,6 +5,8 @@ module.exports = {
     GET_INFO: '/api/get_user_info',
     LOGOUT: '/api/logout',
     CHANGE_PASS: '/api/change_pass',
+    SET_AVA: '/api/set_ava',
+    GET_AVA: '/api/get_ava',
 
     GET_EXER: '/api/list_exer',
     CREATE_EXER: '/api/new_exer',

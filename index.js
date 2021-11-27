@@ -1,3 +1,4 @@
+const multiparty = require('multiparty');
 const express = require('express');
 const https = require("https");
 const fs = require("fs");
@@ -44,6 +45,8 @@ app.post(API_URL.CREATE_USER, USER_SV.CreateNewUser);
 app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 app.post(API_URL.CHANGE_PASS, USER_SV.ChangePassword);
 app.post(API_URL.GET_INFO, USER_SV.GetUserInfo);
+// app.post(API_URL.GET_AVA, multiparty(), USER_SV.GetAva);
+app.post(API_URL.SET_AVA, USER_SV.SetAva);
 
 //Exercises API
 app.post(API_URL.GET_EXER, EXER_SV.GetExercise);

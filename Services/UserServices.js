@@ -2,7 +2,11 @@ const UserDAO = require('./../DAO/UserDAO');
 const Utils = require('./../Utils/ExceptionResponse');
 const JWT_Utils = require('./../Utils/Autho');
 const bcrypt = require('bcrypt');
+const multiparty = require("multiparty");
+const {ThrowMissingFields, SuccessResp} = require("../Utils/ExceptionResponse");
 const SALT_ROUNDS = 10;
+const fs = require("fs");
+const {SetAvaDAO} = require("../DAO/UserDAO");
 /*
 * NOTE:
 *   bcrypt: https://www.npmjs.com/package/bcrypt
@@ -13,10 +17,48 @@ module.exports = {
     CreateNewUser: CreateNewUser,
     EditUserHealthyInfo: EditUserHealthyInfo,
     ChangePassword: ChangePassword,
-    GetUserInfo: GetUserInfo
+    GetUserInfo: GetUserInfo,
+    GetAva: GetAva,
+    SetAva: SetAva
 }
 
 //Handling request
+
+function GetAva(req, resp) {
+    req = req.body;
+}
+
+function SetAva(req, resp) {
+    let form = new multiparty.Form();
+    form.parse(req, function (err, fields, files) {
+        if (!fields.hasOwnProperty("user_id")) {
+            ThrowMissingFields(resp, "user_id");
+            return;
+        }
+        if (!files.hasOwnProperty("avatar_file")) {
+            ThrowMissingFields(resp, "avatar_file");
+            return;
+        }
+        let path = files.avatar_file[0].path;
+        let uid = fields.user_id[0];
+        let newPath = "/../picture/avatar/" + files.avatar_file[0].originalFilename;
+        fs.copyFile(path, __dirname + newPath, function (err) {
+            fs.unlinkSync(path);
+            if (err) {
+                console.log(err);
+                Utils.ResponseDAOFail(resp, err);
+                return;
+            }
+            SetAvaDAO(newPath, Number.parseInt(uid))
+                .then(result => {
+                    SuccessResp(resp, ["ok"]);
+                })
+                .catch(err => {
+                    Utils.ResponseDAOFail(resp, err);
+                });
+        });
+    });
+}
 
 function GetUserInfo(req, resp) {
     req = req.body;
