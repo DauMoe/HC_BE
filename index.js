@@ -10,6 +10,7 @@ const AuthMiddle = require('./Utils/Autho');
 const USER_SV = require('./Services/UserServices');
 const EXER_SV = require('./Services/ExerServices');
 const HISTORY_SV = require('./Services/HistoryServices');
+const path = require("path");
 const PORT = 8080;
 
 
@@ -18,6 +19,9 @@ const privateKey    = fs.readFileSync("./credential/cert.key", 'utf-8');
 const publicKey     = fs.readFileSync("./credential/cert.pem", 'utf-8');
 const credential    = {key: privateKey, cert: publicKey, passphrase: 'daumoe'};
 const httpsServer   = https.createServer(credential, app);
+
+//Public asset
+app.use(express.static(path.join(__dirname,'public')));
 
 //Config
 app.use(cors()); //Pass CORS
@@ -40,12 +44,16 @@ app.get("/test", function (req, resp) {
     resp.send("<h1>Hi there</h1>");
 });
 
+// app.get("/*", function (req, resp) {
+//
+// });
+
 app.post(API_URL.LOGIN, USER_SV.Login);
 app.post(API_URL.CREATE_USER, USER_SV.CreateNewUser);
 app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
 app.post(API_URL.CHANGE_PASS, USER_SV.ChangePassword);
 app.post(API_URL.GET_INFO, USER_SV.GetUserInfo);
-// app.post(API_URL.GET_AVA, multiparty(), USER_SV.GetAva);
+app.post(API_URL.GET_AVA, USER_SV.GetAva);
 app.post(API_URL.SET_AVA, USER_SV.SetAva);
 
 //Exercises API

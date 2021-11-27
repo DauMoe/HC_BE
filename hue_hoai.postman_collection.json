@@ -79,7 +79,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\":\"moe1\",\r\n    \"password\": \"123\"\r\n}",
+					"raw": "{\r\n    \"username\":\"moe1\",\r\n    \"password\": \"234\",\r\n    \"LoginWithFinger\": false\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -87,13 +87,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://192.168.0.108:8080/api/login",
-					"protocol": "http",
+					"raw": "https://localhost:8080/api/login",
+					"protocol": "https",
 					"host": [
-						"192",
-						"168",
-						"0",
-						"108"
+						"localhost"
 					],
 					"port": "8080",
 					"path": [
@@ -152,7 +149,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"id\": 10\r\n}",
+					"raw": "{\r\n    \"id\": 16\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -175,13 +172,42 @@
 			"response": []
 		},
 		{
+			"name": "Get Detail Exercise (NEW)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"exerID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/get_detail_exercise",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_detail_exercise"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get Recommend (List) Exercise",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"grExer\": false,\r\n    \"BMI\": 0\r\n}",
+					"raw": "{\r\n    \"grExer\": true,\r\n    \"BMI\": 22\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -329,42 +355,13 @@
 			"response": []
 		},
 		{
-			"name": "Get Detail Exercise (NEW)",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"exerID\": 1\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/get_detail_exercise",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"get_detail_exercise"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Get Chart Data",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"userID\": 1,\r\n    \"starttime\": 1632070800000,\r\n    \"endtime\": 1632675600000\r\n}",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"starttime\": 1632817421475,\r\n    \"endtime\": 1630139021475\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -381,6 +378,247 @@
 					"path": [
 						"api",
 						"get_chart_data"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create history",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 1,\r\n    \"gr_excerID\": 2,\r\n    \"excerID\": 3,\r\n    \"starttime\": 1632848400000,\r\n    \"endtime\": 1632848400000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/new_history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"new_history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Training History",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/list_history",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list_history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"moe1\",\r\n    \"password\": \"234\",\r\n    \"newpass\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/change_pass",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"change_pass"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rating",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"exerID\": 1,\r\n    \"star\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/rating",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Ex By GrID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grID\": 5\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://192.168.0.108:8080/api/get_detail_by_groupID",
+					"protocol": "http",
+					"host": [
+						"192",
+						"168",
+						"0",
+						"108"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_detail_by_groupID"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Info",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"moe1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/get_user_info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_user_info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get avatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userID\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:8080/api/get_ava",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"get_ava"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set avatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar_file",
+							"type": "file",
+							"src": "/D:/Images/238870.jpg"
+						},
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:8080/api/set_ava",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"set_ava"
 					]
 				}
 			},

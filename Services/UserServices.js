@@ -6,7 +6,8 @@ const multiparty = require("multiparty");
 const {ThrowMissingFields, SuccessResp} = require("../Utils/ExceptionResponse");
 const SALT_ROUNDS = 10;
 const fs = require("fs");
-const {SetAvaDAO} = require("../DAO/UserDAO");
+const path = require("path");
+const {SetAvaDAO, GetAvaDAO} = require("../DAO/UserDAO");
 /*
 * NOTE:
 *   bcrypt: https://www.npmjs.com/package/bcrypt
@@ -26,26 +27,50 @@ module.exports = {
 
 function GetAva(req, resp) {
     req = req.body;
+
+    if (!req.hasOwnProperty("userID")) {
+        Utils.ThrowMissingFields(resp, "userID");
+        return;
+    }
+
+    try {
+        let uid = req.userID;
+        GetAvaDAO(uid)
+            .then(result => {
+                Utils.SuccessResp(resp, [result.msg[0]]);
+            })
+            .catch(e => {
+                Utils.ResponseDAOFail(resp, [e]);
+            });
+    } catch (e) {
+        Utils.ResponseDAOFail(resp, [e]);
+    }
 }
 
 function SetAva(req, resp) {
     let form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
+        if (err) {
+            Utils.ResponseDAOFail(resp, {
+                code: 201,
+                msg: [err.message]
+            });
+            return;
+        }
         if (!fields.hasOwnProperty("user_id")) {
-            ThrowMissingFields(resp, "user_id");
+            Utils.ThrowMissingFields(resp, "user_id");
             return;
         }
         if (!files.hasOwnProperty("avatar_file")) {
-            ThrowMissingFields(resp, "avatar_file");
+            Utils.ThrowMissingFields(resp, "avatar_file");
             return;
         }
-        let path = files.avatar_file[0].path;
+        let oldPath = files.avatar_file[0].path;
         let uid = fields.user_id[0];
-        let newPath = "/../picture/avatar/" + files.avatar_file[0].originalFilename;
-        fs.copyFile(path, __dirname + newPath, function (err) {
-            fs.unlinkSync(path);
+        let newPath = path.join('avatar', files.avatar_file[0].originalFilename);
+        fs.copyFile(oldPath, path.join(__dirname, '..', 'public', newPath), function (err) {
+            fs.unlinkSync(oldPath);
             if (err) {
-                console.log(err);
                 Utils.ResponseDAOFail(resp, err);
                 return;
             }
