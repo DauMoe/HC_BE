@@ -10,6 +10,7 @@ const AuthMiddle = require('./Utils/Autho');
 const USER_SV = require('./Services/UserServices');
 const EXER_SV = require('./Services/ExerServices');
 const HISTORY_SV = require('./Services/HistoryServices');
+const JWT_Utils = require('./Utils/Autho');
 const path = require("path");
 const PORT = 8080;
 
@@ -49,31 +50,31 @@ app.get("/test", function (req, resp) {
 // });
 
 app.post(API_URL.LOGIN, USER_SV.Login);
-app.post(API_URL.CREATE_USER, USER_SV.CreateNewUser);
-app.post(API_URL.UPDATE_HEALTH, USER_SV.EditUserHealthyInfo);
-app.post(API_URL.CHANGE_PASS, USER_SV.ChangePassword);
-app.post(API_URL.GET_INFO, USER_SV.GetUserInfo);
-app.post(API_URL.GET_AVA, USER_SV.GetAva);
-app.post(API_URL.SET_AVA, USER_SV.SetAva);
+app.post(API_URL.CREATE_USER, JWT_Utils.VerifyToken, USER_SV.CreateNewUser);
+app.post(API_URL.UPDATE_HEALTH, JWT_Utils.VerifyToken, USER_SV.EditUserHealthyInfo);
+app.post(API_URL.CHANGE_PASS, JWT_Utils.VerifyToken, USER_SV.ChangePassword);
+app.post(API_URL.GET_INFO, JWT_Utils.VerifyToken, USER_SV.GetUserInfo);
+app.post(API_URL.GET_AVA, JWT_Utils.VerifyToken, USER_SV.GetAva);
+app.post(API_URL.SET_AVA, JWT_Utils.VerifyToken, USER_SV.SetAva);
 
 //Exercises API
-app.post(API_URL.GET_EXER, EXER_SV.GetExercise);
-app.post(API_URL.CREATE_EXER, EXER_SV.CreateExercise);
-app.post(API_URL.GET_RECOM_EXER, EXER_SV.GetRecomExercise);
-app.post(API_URL.GET_GROUP_EXER, EXER_SV.GetGroupExercise);
-app.post(API_URL.GET_DETAIL_EXER, EXER_SV.GetDetailExercise);
-app.post(API_URL.RATING, EXER_SV.Rating);
-app.post(API_URL.GET_EXER_OF_GROUP, EXER_SV.GetExByGrID)
+app.post(API_URL.GET_EXER, JWT_Utils.VerifyToken, EXER_SV.GetExercise);
+app.post(API_URL.CREATE_EXER, JWT_Utils.VerifyToken, EXER_SV.CreateExercise);
+app.post(API_URL.GET_RECOM_EXER, JWT_Utils.VerifyToken, EXER_SV.GetRecomExercise);
+app.post(API_URL.GET_GROUP_EXER, JWT_Utils.VerifyToken, EXER_SV.GetGroupExercise);
+app.post(API_URL.GET_DETAIL_EXER, JWT_Utils.VerifyToken, EXER_SV.GetDetailExercise);
+app.post(API_URL.RATING, JWT_Utils.VerifyToken, EXER_SV.Rating);
+app.post(API_URL.GET_EXER_OF_GROUP, JWT_Utils.VerifyToken, EXER_SV.GetExByGrID)
 
 //History API
-app.post(API_URL.NEW_HISTORY, HISTORY_SV.NewHistory);
-app.post(API_URL.NEW_STEPS, HISTORY_SV.NewStepHistory);
-app.post(API_URL.GET_STEPS, HISTORY_SV.GetStepsHistory);
-app.post(API_URL.GET_RECORD, HISTORY_SV.GetLastStepsRecord);
-app.post(API_URL.GET_HISTORY, HISTORY_SV.GetHistory);
+app.post(API_URL.NEW_HISTORY, JWT_Utils.VerifyToken, HISTORY_SV.NewHistory);
+app.post(API_URL.NEW_STEPS, JWT_Utils.VerifyToken, HISTORY_SV.NewStepHistory);
+app.post(API_URL.GET_STEPS, JWT_Utils.VerifyToken, HISTORY_SV.GetStepsHistory);
+app.post(API_URL.GET_RECORD, JWT_Utils.VerifyToken, HISTORY_SV.GetLastStepsRecord);
+app.post(API_URL.GET_HISTORY, JWT_Utils.VerifyToken, HISTORY_SV.GetHistory);
 
 //Chart data
-app.post(API_URL.GET_STEP_CHART_DATA, HISTORY_SV.GetStepChartData);
+app.post(API_URL.GET_STEP_CHART_DATA, JWT_Utils.VerifyToken, HISTORY_SV.GetStepChartData);
 
 //For test
 app.post(API_URL.TEST, EXER_SV.Test);

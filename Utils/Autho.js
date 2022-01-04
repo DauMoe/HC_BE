@@ -7,8 +7,8 @@ const Utils = require('./ExceptionResponse');
 *   JWT: https://www.npmjs.com/package/jsonwebtoken
 * */
 
-const pubKey = fs.readFileSync(__dirname + "/rsa.pub");
-const priKey = fs.readFileSync(__dirname + "/rsa.pri");
+const pubKey = fs.readFileSync(__dirname + "/rsa.public");
+const priKey = fs.readFileSync(__dirname + "/rsa.private");
 const TIMEOUT = 60 * 60; //1 hour
 
 function GenToken(info) {
@@ -40,10 +40,18 @@ function GenToken(info) {
 }
 
 function VerifyToken(req, resp, next) {
-    if (!req.hasOwnProperty("token")) Utils.ThrowMissingFields(resp, "token");
+    if (!req.body.hasOwnProperty("token")) {
+        Utils.ThrowMissingFields(resp, "token");
+        return;
+    }
     //Middleware: if token is not exp, return true and return false if exp or any err
-    jwt.verify(req.token, pubKey, { algorithms: ['RS256'] }, function (err, payload) {
-        if (err) Utils.CustomMsg(resp, 200, "Token is invalid or expired");
+    console.log(req.body.token);
+    jwt.verify(req.body.token, pubKey, { algorithms: ['RS256'] }, function (err, payload) {
+        if (err) {
+            console.log(err);
+            Utils.CustomMsg(resp, 200, "Token is invalid or expired");
+            return;
+        }
         next();
     });
 }

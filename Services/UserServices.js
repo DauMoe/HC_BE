@@ -163,9 +163,9 @@ function Login(req, resp) {
     req = req.body;
     let LoginWithFinger = false;
     console.log(req);
-    if (!req.hasOwnProperty("username")) Utils.ThrowMissingFields(resp, "username");
+    if (!req.hasOwnProperty("username")) {Utils.ThrowMissingFields(resp, "username"); return;};
     if (req.hasOwnProperty("LoginWithFinger")) LoginWithFinger = req.LoginWithFinger;
-    if (!req.hasOwnProperty("password") && !LoginWithFinger) Utils.ThrowMissingFields(resp, "password");
+    if (!req.hasOwnProperty("password") && !LoginWithFinger) {Utils.ThrowMissingFields(resp, "password"); return;};
 
     let password = req.password || "";
 
