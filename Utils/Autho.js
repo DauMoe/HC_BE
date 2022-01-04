@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
 const Utils = require('./ExceptionResponse');
+const { Convert2String4Java } = require('./ExceptionResponse');
 
 /*
 * NOTE (if you have any ques, please read this instruction first)
@@ -35,7 +36,6 @@ function GenToken(info) {
     resp.username = Utils.Convert2String4Java(info.username);
     resp.token = Utils.Convert2String4Java(token);
     resp.pub = Utils.Convert2String4Java(pubKey.toString());
-
     return resp;
 }
 
@@ -45,11 +45,10 @@ function VerifyToken(req, resp, next) {
         return;
     }
     //Middleware: if token is not exp, return true and return false if exp or any err
-    console.log(req.body.token);
     jwt.verify(req.body.token, pubKey, { algorithms: ['RS256'] }, function (err, payload) {
         if (err) {
             console.log(err);
-            Utils.CustomMsg(resp, 200, "Token is invalid or expired");
+            Utils.CustomMsg(resp, 200, [Convert2String4Java("Token is invalid or expired")]);
             return;
         }
         next();

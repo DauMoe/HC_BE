@@ -15,7 +15,7 @@ const path = require("path");
 const PORT = 8080;
 
 
-//SSL
+
 const privateKey    = fs.readFileSync("./credential/cert.key", 'utf-8');
 const publicKey     = fs.readFileSync("./credential/cert.pem", 'utf-8');
 const credential    = {key: privateKey, cert: publicKey, passphrase: 'daumoe'};
